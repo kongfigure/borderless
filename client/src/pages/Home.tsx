@@ -1,0 +1,144 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+import { Armchair, Home as HomeIcon, Search, Shirt, Sparkles, ThumbsDown } from "lucide-react";
+
+const categories = [
+  { label: "Furniture", icon: Armchair },
+  { label: "Home Goods", icon: HomeIcon },
+  { label: "Clothing", icon: Shirt },
+];
+
+const stores = [
+  { name: "Taobao", code: "T", color: "#B33A2E", country: "China" },
+  { name: "Rakuten", code: "R", color: "#8A2E2E", country: "Japan" },
+  { name: "Coupang", code: "C", color: "#C3A77A", country: "South Korea" },
+  { name: "Naver Shopping", code: "N", color: "#234C3B", country: "South Korea" },
+  { name: "Flipkart", code: "F", color: "#2F6350", country: "India" },
+  { name: "Mercado Libre", code: "M", color: "#C3A77A", country: "Argentina" },
+  { name: "Vinted", code: "V", color: "#234C3B", country: "Lithuania" },
+];
+
+export function Home() {
+  const [query, setQuery] = useState("an oversized linen shirt");
+  const navigate = useNavigate();
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    navigate("/search");
+  };
+
+  return (
+    <div className="mx-auto max-w-6xl px-5 py-12 sm:px-8 sm:py-16">
+      <motion.section
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
+        className="rounded-[2.5rem] bg-forest px-6 py-14 text-ivory sm:px-14 sm:py-20"
+      >
+        <p className="font-sans text-xs font-semibold uppercase tracking-[0.25em] text-gold-light">
+          Everything you desire. Anywhere in the world.
+        </p>
+        <h1 className="mt-4 max-w-xl font-display text-4xl leading-tight sm:text-5xl lg:text-6xl">
+          Shop the world, in English.
+        </h1>
+        <p className="mt-5 max-w-lg text-ivory/80">
+          Find it on Taobao, Rakuten, Coupang and more. We translate it, price it to your door, and tell you if it
+          looks off.
+        </p>
+
+        <form onSubmit={handleSearch} className="mt-8 flex max-w-xl items-center gap-2 rounded-full bg-ivory p-2">
+          <Search size={20} className="ml-3 shrink-0 text-ink/50" aria-hidden="true" />
+          <input
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            aria-label="What do you want to buy?"
+            className="min-w-0 flex-1 bg-transparent px-1 text-base text-ink outline-none"
+          />
+          <button
+            type="submit"
+            className="shrink-0 rounded-full bg-forest px-6 py-2.5 text-sm font-semibold text-ivory transition-transform hover:scale-[1.02]"
+          >
+            Search
+          </button>
+        </form>
+        <div className="mt-4 flex flex-wrap gap-2">
+          {["Speak", "Upload a photo", "Paste a link"].map((chip) => (
+            <span
+              key={chip}
+              className="rounded-full border border-ivory/40 px-4 py-2 text-sm text-ivory/90"
+            >
+              {chip}
+            </span>
+          ))}
+        </div>
+      </motion.section>
+
+      <section className="mt-16">
+        <h2 className="font-display text-2xl text-ink dark:text-ivory">Shop for</h2>
+        <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-3">
+          {categories.map(({ label, icon: Icon }) => (
+            <button
+              key={label}
+              onClick={() => navigate("/search")}
+              className="flex min-h-[160px] flex-col justify-between rounded-3xl border border-line bg-card p-7 text-left transition-transform hover:-translate-y-1 dark:border-dark-line dark:bg-dark-card"
+            >
+              <Icon size={36} strokeWidth={1.5} className="text-forest dark:text-gold" aria-hidden="true" />
+              <span className="font-display text-xl text-ink dark:text-ivory">{label}</span>
+            </button>
+          ))}
+        </div>
+      </section>
+
+      <section className="mt-16">
+        <div className="flex items-baseline justify-between gap-3">
+          <h2 className="font-display text-2xl text-ink dark:text-ivory">Stores we search</h2>
+          <span className="text-sm text-ink/50 dark:text-ivory/50">One search, every store</span>
+        </div>
+        <div className="mt-5 flex flex-wrap gap-3">
+          {stores.map((store) => (
+            <div
+              key={store.name}
+              className="flex items-center gap-3 rounded-full border border-line bg-card py-2 pl-2 pr-5 dark:border-dark-line dark:bg-dark-card"
+            >
+              <span
+                className="flex h-9 w-9 items-center justify-center rounded-full font-display text-sm text-ivory"
+                style={{ backgroundColor: store.color }}
+                aria-hidden="true"
+              >
+                {store.code}
+              </span>
+              <div>
+                <p className="text-sm font-medium text-ink dark:text-ivory">{store.name}</p>
+                <p className="text-xs text-ink/50 dark:text-ivory/50">{store.country}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="mt-16 grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <button
+          onClick={() => navigate("/deinfluence")}
+          className="flex items-center justify-between gap-4 rounded-3xl border border-gold/30 bg-gold/10 px-7 py-6 text-left transition-transform hover:-translate-y-1"
+        >
+          <div>
+            <p className="font-display text-xl text-ink dark:text-ivory">Deinfluence me</p>
+            <p className="text-sm text-ink/60 dark:text-ivory/60">Talk me out of it</p>
+          </div>
+          <ThumbsDown size={28} strokeWidth={1.5} className="shrink-0 text-forest dark:text-gold" aria-hidden="true" />
+        </button>
+        <button
+          onClick={() => navigate("/hype")}
+          className="flex items-center justify-between gap-4 rounded-3xl border border-forest/20 bg-forest/5 px-7 py-6 text-left transition-transform hover:-translate-y-1 dark:border-gold/20 dark:bg-gold/5"
+        >
+          <div>
+            <p className="font-display text-xl text-ink dark:text-ivory">Is it worth the hype?</p>
+            <p className="text-sm text-ink/60 dark:text-ivory/60">Try Hype Check</p>
+          </div>
+          <Sparkles size={28} strokeWidth={1.5} className="shrink-0 text-forest dark:text-gold" aria-hidden="true" />
+        </button>
+      </section>
+    </div>
+  );
+}

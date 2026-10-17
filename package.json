@@ -1,0 +1,26 @@
+{
+  "name": "borderless",
+  "version": "1.0.0",
+  "description": "Borderless — shop the world, in English. DubHacks 2026.",
+  "private": true,
+  "scripts": {
+    "install:all": "npm install && npm install --prefix client && npm install --prefix server",
+    "dev": "concurrently -n server,client -c green,cyan \"npm run dev --prefix server\" \"npm run dev --prefix client\"",
+    "build": "npm run build --prefix server && npm run build --prefix client",
+    "typecheck": "npm run typecheck --prefix server && tsc -b client"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kongfigure/borderless.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kongfigure/borderless/issues"
+  },
+  "homepage": "https://github.com/kongfigure/borderless#readme",
+  "devDependencies": {
+    "concurrently": "^10.0.6"
+  }
+}
