@@ -4,10 +4,11 @@
   "description": "Borderless — shop the world, in English. DubHacks 2026.",
   "private": true,
   "scripts": {
-    "install:all": "npm install && npm install --prefix client && npm install --prefix server",
+    "install:all": "npm install && npm install --prefix shared && npm install --prefix client && npm install --prefix server",
     "dev": "concurrently -n server,client -c green,cyan \"npm run dev --prefix server\" \"npm run dev --prefix client\"",
     "build": "npm run build --prefix server && npm run build --prefix client",
-    "typecheck": "npm run typecheck --prefix server && tsc -b client"
+    "typecheck": "npm run typecheck --prefix shared && npm run typecheck --prefix server && tsc -b client",
+    "test": "npm run test --prefix shared"
   },
   "repository": {
     "type": "git",

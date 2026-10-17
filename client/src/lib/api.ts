@@ -1,8 +1,46 @@
-import type { Product } from "@shared/types";
+import type { Product, ScoredProduct } from "@shared/types";
 
 export async function fetchProducts(): Promise<Product[]> {
   const res = await fetch("/api/products");
   if (!res.ok) throw new Error(`Failed to load products: ${res.status}`);
   const data = await res.json();
   return data.products as Product[];
+}
+
+export interface SearchResponse {
+  chineseTerm: string;
+  source: "live" | "fallback";
+  steps: string[];
+  results: ScoredProduct[];
+}
+
+export async function searchProducts(query: string): Promise<SearchResponse> {
+  const res = await fetch("/api/search", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ query }),
+  });
+  if (!res.ok) {
+    const body = await res.json().catch(() => null);
+    throw new Error(body?.error ?? `Search failed: ${res.status}`);
+  }
+  return res.json();
+}
+
+export interface ExplainResponse {
+  explanation: string;
+  source: "live" | "fallback";
+}
+
+export async function explainProduct(productId: string): Promise<ExplainResponse> {
+  const res = await fetch("/api/explain", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ productId }),
+  });
+  if (!res.ok) {
+    const body = await res.json().catch(() => null);
+    throw new Error(body?.error ?? `Explain failed: ${res.status}`);
+  }
+  return res.json();
 }

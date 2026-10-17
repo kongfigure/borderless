@@ -25,7 +25,9 @@ export function Home() {
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    navigate("/search");
+    const trimmed = query.trim();
+    if (!trimmed) return;
+    navigate(`/search?q=${encodeURIComponent(trimmed)}`);
   };
 
   return (
@@ -34,43 +36,77 @@ export function Home() {
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: "easeOut" }}
-        className="rounded-[2.5rem] bg-forest px-6 py-14 text-ivory sm:px-14 sm:py-20"
+        className="grid grid-cols-1 overflow-hidden rounded-[2.5rem] bg-forest text-ivory lg:grid-cols-[1.3fr_1fr]"
       >
-        <p className="font-sans text-xs font-semibold uppercase tracking-[0.25em] text-gold-light">
-          Everything you desire. Anywhere in the world.
-        </p>
-        <h1 className="mt-4 max-w-xl font-display text-4xl leading-tight sm:text-5xl lg:text-6xl">
-          Shop the world, in English.
-        </h1>
-        <p className="mt-5 max-w-lg text-ivory/80">
-          Find it on Taobao, Rakuten, Coupang and more. We translate it, price it to your door, and tell you if it
-          looks off.
-        </p>
+        <div className="px-6 py-14 sm:px-14 sm:py-20">
+          <p className="font-sans text-xs font-semibold uppercase tracking-[0.25em] text-gold-light">
+            Everything you desire. Anywhere in the world.
+          </p>
+          <h1 className="mt-4 max-w-xl font-display text-4xl leading-tight sm:text-5xl lg:text-6xl">
+            Shop the world, in English.
+          </h1>
+          <p className="mt-5 max-w-lg text-ivory/80">
+            Find it on Taobao, Rakuten, Coupang and more. We translate it, price it to your door, and tell you if it
+            looks off.
+          </p>
 
-        <form onSubmit={handleSearch} className="mt-8 flex max-w-xl items-center gap-2 rounded-full bg-ivory p-2">
-          <Search size={20} className="ml-3 shrink-0 text-ink/50" aria-hidden="true" />
-          <input
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            aria-label="What do you want to buy?"
-            className="min-w-0 flex-1 bg-transparent px-1 text-base text-ink outline-none"
-          />
-          <button
-            type="submit"
-            className="shrink-0 rounded-full bg-forest px-6 py-2.5 text-sm font-semibold text-ivory transition-transform hover:scale-[1.02]"
-          >
-            Search
-          </button>
-        </form>
-        <div className="mt-4 flex flex-wrap gap-2">
-          {["Speak", "Upload a photo", "Paste a link"].map((chip) => (
-            <span
-              key={chip}
-              className="rounded-full border border-ivory/40 px-4 py-2 text-sm text-ivory/90"
+          <form onSubmit={handleSearch} className="mt-8 flex max-w-xl items-center gap-2 rounded-full bg-ivory p-2">
+            <Search size={20} className="ml-3 shrink-0 text-ink/50" aria-hidden="true" />
+            <input
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              aria-label="What do you want to buy?"
+              className="min-w-0 flex-1 bg-transparent px-1 text-base text-ink outline-none"
+            />
+            <button
+              type="submit"
+              className="shrink-0 rounded-full bg-forest px-6 py-2.5 text-sm font-semibold text-ivory transition-transform hover:scale-[1.02]"
             >
-              {chip}
-            </span>
-          ))}
+              Search
+            </button>
+          </form>
+          <div className="mt-4 flex flex-wrap gap-2">
+            {["Speak", "Upload a photo", "Paste a link"].map((chip) => (
+              <span
+                key={chip}
+                className="rounded-full border border-ivory/40 px-4 py-2 text-sm text-ivory/90"
+              >
+                {chip}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        <div className="relative hidden min-h-[320px] lg:block" aria-hidden="true">
+          <div
+            className="absolute right-[18%] top-[14%] h-40 w-32 rotate-[-6deg] rounded-2xl shadow-xl"
+            style={{ background: "linear-gradient(160deg, #e8e2d4 0%, #d8c4a0 100%)" }}
+          />
+          <div
+            className="absolute right-[32%] top-[30%] h-44 w-36 rotate-[4deg] rounded-2xl shadow-xl"
+            style={{ background: "linear-gradient(160deg, #2f6350 0%, #234c3b 100%)" }}
+          />
+          <div
+            className="absolute right-[8%] top-[42%] h-36 w-28 rotate-[10deg] rounded-2xl shadow-xl"
+            style={{ background: "linear-gradient(160deg, #f7f5f0 0%, #d8c4a0 100%)" }}
+          />
+
+          <motion.span
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="absolute left-[6%] top-[20%] rounded-full bg-ivory px-4 py-2 text-xs font-medium text-ink shadow-md"
+          >
+            Shanghai · Taobao · $34 to your door
+          </motion.span>
+          <motion.span
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.5 }}
+            className="absolute bottom-[14%] right-[14%] rounded-full bg-good-soft px-4 py-1.5 text-xs font-semibold text-good shadow-md"
+          >
+            Looks good
+          </motion.span>
         </div>
       </motion.section>
 

@@ -1,18 +1,8 @@
-import { useEffect, useState } from "react";
-import { Armchair, Home as HomeIcon, Shirt } from "lucide-react";
-import type { Product, Verdict } from "@shared/types";
+import { useEffect, useMemo, useState } from "react";
+import type { Product } from "@shared/types";
+import { landedCost, trustVerdict } from "@shared/calculations";
 import { fetchProducts } from "@/lib/api";
-
-const categoryIcon = { Furniture: Armchair, "Home Goods": HomeIcon, Clothing: Shirt } as const;
-
-const verdictStyles: Record<Verdict, string> = {
-  "Looks good": "bg-good-soft text-good",
-  "Pre-order": "bg-warn-soft text-warn",
-  Skip: "bg-bad-soft text-bad",
-  "Not enough info": "bg-line text-ink/60 dark:bg-dark-line dark:text-ivory/60",
-};
-
-const tileTones = ["bg-forest/10", "bg-gold/15", "bg-forest/5"];
+import { ProductCard } from "@/components/ProductCard";
 
 export function Discover() {
   const [products, setProducts] = useState<Product[] | null>(null);
@@ -23,6 +13,16 @@ export function Discover() {
       .then(setProducts)
       .catch(() => setError("Couldn't reach the sample data API. Is the server running?"));
   }, []);
+
+  const scored = useMemo(
+    () =>
+      products?.map((product) => ({
+        ...product,
+        landedCost: landedCost(product),
+        verdictResult: trustVerdict(product),
+      })) ?? null,
+    [products]
+  );
 
   return (
     <div className="mx-auto max-w-6xl px-5 py-12 sm:px-8 sm:py-16">
@@ -37,7 +37,7 @@ export function Discover() {
         <p className="mt-8 rounded-2xl border border-bad/30 bg-bad-soft px-5 py-4 text-sm text-bad">{error}</p>
       )}
 
-      {!products && !error && (
+      {!scored && !error && (
         <div className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {Array.from({ length: 6 }).map((_, i) => (
             <div
@@ -48,42 +48,11 @@ export function Discover() {
         </div>
       )}
 
-      {products && (
+      {scored && (
         <div className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {products.map((product, i) => {
-            const Icon = categoryIcon[product.category];
-            return (
-              <div
-                key={product.id}
-                className="flex flex-col gap-4 rounded-3xl border border-line bg-card p-4 transition-transform hover:-translate-y-1 dark:border-dark-line dark:bg-dark-card"
-              >
-                <div
-                  className={`relative flex h-40 items-center justify-center rounded-2xl ${tileTones[i % tileTones.length]}`}
-                >
-                  <Icon size={48} strokeWidth={1.5} className="text-forest dark:text-gold" aria-hidden="true" />
-                  <span
-                    className={`absolute left-3 top-3 rounded-full px-3 py-1 text-xs font-semibold ${verdictStyles[product.verdict]}`}
-                  >
-                    {product.verdict}
-                  </span>
-                </div>
-                <div className="flex flex-col gap-1 px-1">
-                  <p className="text-xs text-ink/50 dark:text-ivory/50">
-                    {product.marketplace} · {product.country}
-                  </p>
-                  <p className="font-display text-lg text-ink dark:text-ivory">{product.title}</p>
-                  <div className="mt-1 flex items-baseline justify-between">
-                    <span className="font-display text-2xl text-forest dark:text-gold">
-                      ${product.cost.totalUSD.toFixed(2)}
-                    </span>
-                    <span className="text-xs text-ink/50 dark:text-ivory/50">
-                      {product.deliveryDays} days to your door
-                    </span>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
+          {scored.map((product, i) => (
+            <ProductCard key={product.id} product={product} tileIndex={i} />
+          ))}
         </div>
       )}
 

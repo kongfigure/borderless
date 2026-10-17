@@ -22,14 +22,19 @@ export type CountryCode = "CN" | "JP" | "KR" | "IN" | "AR" | "LT";
 
 export type Category = "Furniture" | "Home Goods" | "Clothing";
 
-/** A guide, not proof. "Not enough info" is used instead of guessing. */
-export type Verdict = "Looks good" | "Pre-order" | "Skip" | "Not enough info";
+/** Whether a listing ships immediately or is a pre-order. Not a judgement of
+ * trust — tracked separately from the verdict. */
+export type Fulfillment = "in_stock" | "pre_order";
+
+/** A guide, not proof. "not_enough_info" is used instead of guessing. */
+export type Verdict = "looks_good" | "skip" | "not_enough_info";
 
 export interface LandedCost {
   itemPriceUSD: number;
   shippingUSD: number;
-  /** Flat 15% of item price, per the build spec. */
+  /** Flat 15% of item price — a documented demo assumption, not a real duty rate. */
   dutyUSD: number;
+  /** 8% of item + shipping + duty — a documented demo assumption, not real tax. */
   estimatedTaxUSD: number;
   totalUSD: number;
 }
@@ -38,12 +43,12 @@ export interface LandedCost {
  * LLM explanation of a verdict is allowed to read, as a defence against
  * prompt injection from listing content. */
 export interface TrustSignals {
-  priceVsMedianPercent: number;
   categoryMedianPriceUSD: number;
   imageReuseCount: number;
   sellerAgeMonths: number;
   reviewCount: number;
   reviewRating: number;
+  /** Free-text note for human display only — never sent to an LLM or used in scoring. */
   reviewNotes: string;
   certification: string | null;
 }
@@ -58,9 +63,29 @@ export interface Product {
   country: Country;
   countryCode: CountryCode;
   deliveryDays: number;
-  cost: LandedCost;
+  itemPriceUSD: number;
+  shippingUSD: number;
+  fulfillment: Fulfillment;
   trust: TrustSignals;
-  verdict: Verdict;
   /** Always true. All product data in this app is sample/demo data. */
   isSample: true;
+}
+
+export type SignalTone = "good" | "bad" | "info";
+
+export interface TrustSignalExplanation {
+  id: string;
+  tone: SignalTone;
+  reason: string;
+}
+
+export interface TrustVerdictResult {
+  verdict: Verdict;
+  signals: TrustSignalExplanation[];
+}
+
+/** A product with its landed cost and trust verdict computed. */
+export interface ScoredProduct extends Product {
+  landedCost: LandedCost;
+  verdictResult: TrustVerdictResult;
 }

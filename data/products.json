@@ -1,5 +1,5 @@
 {
-  "note": "SAMPLE DATA for the Borderless DubHacks demo. Every product, price, review count and trust signal below is made up for demonstration. No real listings, sellers or marketplace data are represented.",
+  "note": "SAMPLE DATA for the Borderless DubHacks demo. Every product, price, review count and trust signal below is made up for demonstration. No real listings, sellers or marketplace data are represented. landedCost and verdicts are computed on the fly by shared/calculations.ts, not stored here.",
   "products": [
     {
       "id": "tb-001",
@@ -10,9 +10,10 @@
       "country": "China",
       "countryCode": "CN",
       "deliveryDays": 9,
-      "cost": { "itemPriceUSD": 20, "shippingUSD": 9, "dutyUSD": 3, "estimatedTaxUSD": 1.6, "totalUSD": 33.6 },
+      "itemPriceUSD": 20,
+      "shippingUSD": 9,
+      "fulfillment": "in_stock",
       "trust": {
-        "priceVsMedianPercent": -10,
         "categoryMedianPriceUSD": 31,
         "imageReuseCount": 1,
         "sellerAgeMonths": 42,
@@ -21,7 +22,6 @@
         "reviewNotes": "Multiple reviews say it runs true to size.",
         "certification": null
       },
-      "verdict": "Looks good",
       "isSample": true
     },
     {
@@ -33,9 +33,10 @@
       "country": "China",
       "countryCode": "CN",
       "deliveryDays": 21,
-      "cost": { "itemPriceUSD": 68, "shippingUSD": 22, "dutyUSD": 10.2, "estimatedTaxUSD": 5.44, "totalUSD": 105.64 },
+      "itemPriceUSD": 68,
+      "shippingUSD": 22,
+      "fulfillment": "in_stock",
       "trust": {
-        "priceVsMedianPercent": -4,
         "categoryMedianPriceUSD": 71,
         "imageReuseCount": 0,
         "sellerAgeMonths": 61,
@@ -44,7 +45,6 @@
         "reviewNotes": "Reviewers note solid joinery; minor assembly required.",
         "certification": "FSC-certified wood (seller claim)"
       },
-      "verdict": "Looks good",
       "isSample": true
     },
     {
@@ -56,18 +56,18 @@
       "country": "China",
       "countryCode": "CN",
       "deliveryDays": 15,
-      "cost": { "itemPriceUSD": 45, "shippingUSD": 18, "dutyUSD": 6.75, "estimatedTaxUSD": 3.6, "totalUSD": 73.35 },
+      "itemPriceUSD": 45,
+      "shippingUSD": 18,
+      "fulfillment": "in_stock",
       "trust": {
-        "priceVsMedianPercent": 2,
         "categoryMedianPriceUSD": 44,
         "imageReuseCount": 3,
         "sellerAgeMonths": 7,
-        "reviewCount": 28,
+        "reviewCount": 9,
         "reviewRating": 4.3,
         "reviewNotes": "Too few reviews to confirm glaze durability.",
         "certification": null
       },
-      "verdict": "Not enough info",
       "isSample": true
     },
     {
@@ -79,9 +79,10 @@
       "country": "China",
       "countryCode": "CN",
       "deliveryDays": 24,
-      "cost": { "itemPriceUSD": 22, "shippingUSD": 7, "dutyUSD": 3.3, "estimatedTaxUSD": 1.76, "totalUSD": 34.06 },
+      "itemPriceUSD": 22,
+      "shippingUSD": 7,
+      "fulfillment": "pre_order",
       "trust": {
-        "priceVsMedianPercent": -6,
         "categoryMedianPriceUSD": 31,
         "imageReuseCount": 2,
         "sellerAgeMonths": 15,
@@ -90,7 +91,6 @@
         "reviewNotes": "Pre-order: seller ships in about three weeks.",
         "certification": null
       },
-      "verdict": "Pre-order",
       "isSample": true
     },
     {
@@ -102,9 +102,10 @@
       "country": "China",
       "countryCode": "CN",
       "deliveryDays": 12,
-      "cost": { "itemPriceUSD": 11, "shippingUSD": 6, "dutyUSD": 1.65, "estimatedTaxUSD": 0.88, "totalUSD": 19.53 },
+      "itemPriceUSD": 11,
+      "shippingUSD": 6,
+      "fulfillment": "in_stock",
       "trust": {
-        "priceVsMedianPercent": -65,
         "categoryMedianPriceUSD": 31,
         "imageReuseCount": 14,
         "sellerAgeMonths": 2,
@@ -113,7 +114,6 @@
         "reviewNotes": "Reviews mention polyester, not linen.",
         "certification": null
       },
-      "verdict": "Skip",
       "isSample": true
     },
     {
@@ -125,9 +125,10 @@
       "country": "China",
       "countryCode": "CN",
       "deliveryDays": 26,
-      "cost": { "itemPriceUSD": 95, "shippingUSD": 35, "dutyUSD": 14.25, "estimatedTaxUSD": 7.6, "totalUSD": 151.85 },
+      "itemPriceUSD": 95,
+      "shippingUSD": 35,
+      "fulfillment": "in_stock",
       "trust": {
-        "priceVsMedianPercent": -8,
         "categoryMedianPriceUSD": 103,
         "imageReuseCount": 0,
         "sellerAgeMonths": 54,
@@ -136,7 +137,6 @@
         "reviewNotes": "Reviewers say it's sturdier than expected for the price.",
         "certification": null
       },
-      "verdict": "Looks good",
       "isSample": true
     },
     {
@@ -147,9 +147,10 @@
       "country": "Japan",
       "countryCode": "JP",
       "deliveryDays": 18,
-      "cost": { "itemPriceUSD": 289, "shippingUSD": 24, "dutyUSD": 43.35, "estimatedTaxUSD": 23.12, "totalUSD": 379.47 },
+      "itemPriceUSD": 289,
+      "shippingUSD": 24,
+      "fulfillment": "in_stock",
       "trust": {
-        "priceVsMedianPercent": 38,
         "categoryMedianPriceUSD": 210,
         "imageReuseCount": 1,
         "sellerAgeMonths": 30,
@@ -158,7 +159,6 @@
         "reviewNotes": "High marks for look; several say it's pricey for the comfort level.",
         "certification": null
       },
-      "verdict": "Looks good",
       "isSample": true
     },
     {
@@ -169,9 +169,10 @@
       "country": "South Korea",
       "countryCode": "KR",
       "deliveryDays": 11,
-      "cost": { "itemPriceUSD": 165, "shippingUSD": 15, "dutyUSD": 24.75, "estimatedTaxUSD": 13.2, "totalUSD": 217.95 },
+      "itemPriceUSD": 165,
+      "shippingUSD": 15,
+      "fulfillment": "in_stock",
       "trust": {
-        "priceVsMedianPercent": -21,
         "categoryMedianPriceUSD": 210,
         "imageReuseCount": 0,
         "sellerAgeMonths": 48,
@@ -180,7 +181,6 @@
         "reviewNotes": "Consistently praised as the better value pick.",
         "certification": null
       },
-      "verdict": "Looks good",
       "isSample": true
     },
     {
@@ -191,9 +191,10 @@
       "country": "South Korea",
       "countryCode": "KR",
       "deliveryDays": 10,
-      "cost": { "itemPriceUSD": 38, "shippingUSD": 12, "dutyUSD": 5.7, "estimatedTaxUSD": 3.04, "totalUSD": 58.74 },
+      "itemPriceUSD": 38,
+      "shippingUSD": 12,
+      "fulfillment": "in_stock",
       "trust": {
-        "priceVsMedianPercent": -5,
         "categoryMedianPriceUSD": 40,
         "imageReuseCount": 0,
         "sellerAgeMonths": 33,
@@ -202,7 +203,6 @@
         "reviewNotes": "Reviewers highlight careful packaging.",
         "certification": null
       },
-      "verdict": "Looks good",
       "isSample": true
     },
     {
@@ -213,9 +213,10 @@
       "country": "India",
       "countryCode": "IN",
       "deliveryDays": 13,
-      "cost": { "itemPriceUSD": 32, "shippingUSD": 10, "dutyUSD": 4.8, "estimatedTaxUSD": 2.56, "totalUSD": 49.36 },
+      "itemPriceUSD": 32,
+      "shippingUSD": 10,
+      "fulfillment": "in_stock",
       "trust": {
-        "priceVsMedianPercent": -3,
         "categoryMedianPriceUSD": 33,
         "imageReuseCount": 1,
         "sellerAgeMonths": 27,
@@ -224,7 +225,6 @@
         "reviewNotes": "Several reviews confirm true-to-size fit.",
         "certification": "GOTS-certified cotton (seller claim)"
       },
-      "verdict": "Looks good",
       "isSample": true
     },
     {
@@ -235,9 +235,10 @@
       "country": "Argentina",
       "countryCode": "AR",
       "deliveryDays": 19,
-      "cost": { "itemPriceUSD": 56, "shippingUSD": 20, "dutyUSD": 8.4, "estimatedTaxUSD": 4.48, "totalUSD": 88.88 },
+      "itemPriceUSD": 56,
+      "shippingUSD": 20,
+      "fulfillment": "in_stock",
       "trust": {
-        "priceVsMedianPercent": 4,
         "categoryMedianPriceUSD": 54,
         "imageReuseCount": 2,
         "sellerAgeMonths": 5,
@@ -246,7 +247,6 @@
         "reviewNotes": "Too few reviews to confirm wool content.",
         "certification": null
       },
-      "verdict": "Not enough info",
       "isSample": true
     },
     {
@@ -257,9 +257,10 @@
       "country": "Lithuania",
       "countryCode": "LT",
       "deliveryDays": 14,
-      "cost": { "itemPriceUSD": 42, "shippingUSD": 11, "dutyUSD": 6.3, "estimatedTaxUSD": 3.36, "totalUSD": 62.66 },
+      "itemPriceUSD": 42,
+      "shippingUSD": 11,
+      "fulfillment": "in_stock",
       "trust": {
-        "priceVsMedianPercent": -12,
         "categoryMedianPriceUSD": 48,
         "imageReuseCount": 0,
         "sellerAgeMonths": 22,
@@ -268,7 +269,6 @@
         "reviewNotes": "Seller has strong secondhand feedback history.",
         "certification": null
       },
-      "verdict": "Looks good",
       "isSample": true
     }
   ]
