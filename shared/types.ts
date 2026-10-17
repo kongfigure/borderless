@@ -22,6 +22,9 @@ export type CountryCode = "CN" | "JP" | "KR" | "IN" | "AR" | "LT";
 
 export type Category = "Furniture" | "Home Goods" | "Clothing";
 
+/** Secondhand condition, shown on resale listings. */
+export type Condition = "Excellent" | "Good" | "Worn";
+
 /** Whether a listing ships immediately or is a pre-order. Not a judgement of
  * trust — tracked separately from the verdict. */
 export type Fulfillment = "in_stock" | "pre_order";
@@ -67,6 +70,11 @@ export interface Product {
   shippingUSD: number;
   fulfillment: Fulfillment;
   trust: TrustSignals;
+  /** When set, groups the "same" item as sold across different marketplaces,
+   * for the cross-marketplace comparison panel. Sample data only. */
+  comparisonGroup?: string;
+  /** Present only on secondhand/vintage listings, for the Resale page. */
+  condition?: Condition;
   /** Always true. All product data in this app is sample/demo data. */
   isSample: true;
 }

@@ -3,6 +3,8 @@ import { Nav } from "@/components/Nav";
 import { Home } from "@/pages/Home";
 import { Discover } from "@/pages/Discover";
 import { Search } from "@/pages/Search";
+import { Destinations } from "@/pages/Destinations";
+import { DestinationCity } from "@/pages/DestinationCity";
 import { Product } from "@/pages/Product";
 import { Skip } from "@/pages/Skip";
 import { Chat } from "@/pages/Chat";
@@ -19,6 +21,8 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/discover" element={<Discover />} />
           <Route path="/search" element={<Search />} />
+          <Route path="/destinations" element={<Destinations />} />
+          <Route path="/destinations/:city" element={<DestinationCity />} />
           <Route path="/product/:id" element={<Product />} />
           <Route path="/skip/:id" element={<Skip />} />
           <Route path="/chat/:id" element={<Chat />} />
