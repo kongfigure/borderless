@@ -1,5 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import { Nav } from "@/components/Nav";
+import { AssistantWidget } from "@/components/AssistantWidget";
 import { Home } from "@/pages/Home";
 import { Discover } from "@/pages/Discover";
 import { Search } from "@/pages/Search";
@@ -37,6 +38,7 @@ function App() {
           <Route path="/your-taste" element={<YourTaste />} />
         </Routes>
       </main>
+      <AssistantWidget />
     </div>
   );
 }

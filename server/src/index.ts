@@ -8,6 +8,7 @@ import { explainVerdict } from "./explain.js";
 import { scoreProduct } from "./score.js";
 import { hypeCheck } from "./hype.js";
 import { deinfluence } from "./deinfluence.js";
+import { assistantReply, type AssistantTurn } from "./assistant.js";
 
 const app = express();
 const PORT = process.env.PORT ? Number(process.env.PORT) : 3001;
@@ -160,6 +161,39 @@ app.post("/api/deinfluence", async (req, res) => {
   } catch (err) {
     console.error("[/api/deinfluence] error:", err);
     res.status(500).json({ error: "deinfluence failed" });
+  }
+});
+
+app.post("/api/assistant", async (req, res) => {
+  const { message, history, context } = req.body ?? {};
+
+  if (typeof message !== "string" || message.trim().length === 0 || message.length > 1000) {
+    res.status(400).json({ error: "message is required and must be a non-empty string under 1000 characters" });
+    return;
+  }
+
+  const isValidTurn = (t: unknown): t is AssistantTurn =>
+    typeof t === "object" &&
+    t !== null &&
+    ((t as AssistantTurn).role === "user" || (t as AssistantTurn).role === "assistant") &&
+    typeof (t as AssistantTurn).content === "string";
+
+  if (!Array.isArray(history) || history.length > 10 || !history.every(isValidTurn)) {
+    res.status(400).json({ error: "history must be an array of at most 10 {role, content} turns" });
+    return;
+  }
+
+  if (typeof context !== "object" || context === null) {
+    res.status(400).json({ error: "context is required" });
+    return;
+  }
+
+  try {
+    const result = await assistantReply({ message: message.trim(), history, context });
+    res.json(result);
+  } catch (err) {
+    console.error("[/api/assistant] error:", err);
+    res.status(500).json({ error: "assistant failed" });
   }
 });
 

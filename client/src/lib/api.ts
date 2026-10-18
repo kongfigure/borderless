@@ -99,3 +99,60 @@ export async function deinfluence(input: DeinfluenceRequest): Promise<Deinfluenc
   }
   return res.json();
 }
+
+export interface AssistantTurn {
+  role: "user" | "assistant";
+  content: string;
+}
+
+export interface AssistantVisibleProduct {
+  id: string;
+  title: string;
+  marketplace: string;
+  country: string;
+  totalUSD: number;
+  verdict: string;
+}
+
+export interface AssistantCartItem {
+  id: string;
+  title: string;
+  totalUSD: number;
+}
+
+export interface AssistantPreferences {
+  budgetUSD: number | null;
+  categories: string[];
+  deliveryDeadlineDays: number | null;
+}
+
+export interface AssistantContext {
+  route: string;
+  visibleProducts: AssistantVisibleProduct[];
+  cart: AssistantCartItem[];
+  preferences: AssistantPreferences | null;
+}
+
+export interface AssistantRequest {
+  message: string;
+  history: AssistantTurn[];
+  context: AssistantContext;
+}
+
+export interface AssistantResponse {
+  reply: string;
+  source: "live" | "fallback";
+}
+
+export async function askAssistant(input: AssistantRequest): Promise<AssistantResponse> {
+  const res = await fetch("/api/assistant", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(input),
+  });
+  if (!res.ok) {
+    const body = await res.json().catch(() => null);
+    throw new Error(body?.error ?? `Assistant failed: ${res.status}`);
+  }
+  return res.json();
+}
