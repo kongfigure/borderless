@@ -71,3 +71,31 @@ export async function hypeCheck(input: HypeCheckRequest): Promise<HypeCheckRespo
   }
   return res.json();
 }
+
+export interface DeinfluenceRequest {
+  itemName: string;
+  priceUSD: number;
+}
+
+export interface DeinfluenceResponse {
+  costPerUseUSD: number;
+  assumedUses: number;
+  usageNote: string;
+  verdict: string;
+  tip: string;
+  alternative: string;
+  source: "live" | "fallback";
+}
+
+export async function deinfluence(input: DeinfluenceRequest): Promise<DeinfluenceResponse> {
+  const res = await fetch("/api/deinfluence", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(input),
+  });
+  if (!res.ok) {
+    const body = await res.json().catch(() => null);
+    throw new Error(body?.error ?? `Deinfluence failed: ${res.status}`);
+  }
+  return res.json();
+}

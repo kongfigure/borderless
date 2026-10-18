@@ -7,6 +7,7 @@ import { translateQuery } from "./translate.js";
 import { explainVerdict } from "./explain.js";
 import { scoreProduct } from "./score.js";
 import { hypeCheck } from "./hype.js";
+import { deinfluence } from "./deinfluence.js";
 
 const app = express();
 const PORT = process.env.PORT ? Number(process.env.PORT) : 3001;
@@ -138,6 +139,27 @@ app.post("/api/hype-check", async (req, res) => {
   } catch (err) {
     console.error("[/api/hype-check] error:", err);
     res.status(500).json({ error: "hype check failed" });
+  }
+});
+
+app.post("/api/deinfluence", async (req, res) => {
+  const { itemName, priceUSD } = req.body ?? {};
+
+  if (typeof itemName !== "string" || itemName.trim().length === 0 || itemName.length > 100) {
+    res.status(400).json({ error: "itemName is required and must be a non-empty string under 100 characters" });
+    return;
+  }
+  if (typeof priceUSD !== "number" || !Number.isFinite(priceUSD) || priceUSD <= 0) {
+    res.status(400).json({ error: "priceUSD is required and must be a positive number" });
+    return;
+  }
+
+  try {
+    const result = await deinfluence({ itemName: itemName.trim(), priceUSD });
+    res.json(result);
+  } catch (err) {
+    console.error("[/api/deinfluence] error:", err);
+    res.status(500).json({ error: "deinfluence failed" });
   }
 });
 
