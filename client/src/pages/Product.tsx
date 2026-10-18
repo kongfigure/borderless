@@ -5,9 +5,9 @@ import type { Product as ProductType, ScoredProduct } from "@shared/types";
 import { landedCost, trustVerdict } from "@shared/calculations";
 import { fetchProducts } from "@/lib/api";
 import { Flag } from "@/components/Flag";
+import { MarketplaceMark } from "@/components/MarketplaceMark";
 import { LearnTip } from "@/components/LearnTip";
-import { getBadge, BADGE_STYLES } from "@/lib/verdict";
-import { MARKETPLACE_INFO } from "@/lib/marketplaces";
+import { getBadge, BADGE_ICON, BADGE_STYLES } from "@/lib/verdict";
 
 const SIGNAL_ICON = { good: CheckCircle2, bad: XCircle, info: Info } as const;
 const SIGNAL_COLOR = {
@@ -72,7 +72,7 @@ export function Product() {
   }
 
   const badge = getBadge(selected);
-  const marketplace = MARKETPLACE_INFO[selected.marketplace];
+  const BadgeIcon = BADGE_ICON[badge.tone];
   const lowestTotal = group.length > 0 ? group[0].landedCost.totalUSD : selected.landedCost.totalUSD;
   const highestTotal = group.length > 0 ? group[group.length - 1].landedCost.totalUSD : selected.landedCost.totalUSD;
   const savings = highestTotal - lowestTotal;
@@ -89,13 +89,7 @@ export function Product() {
 
       <div className="mt-6 flex flex-wrap items-center gap-2">
         <Flag code={selected.countryCode} />
-        <span
-          className="flex h-6 w-6 items-center justify-center rounded-full text-[10px] font-semibold text-ivory"
-          style={{ backgroundColor: marketplace.color }}
-          aria-hidden="true"
-        >
-          {marketplace.code}
-        </span>
+        <MarketplaceMark marketplace={selected.marketplace} size={24} />
         <span className="text-sm text-ink/60 dark:text-ivory/60">
           {selected.marketplace} &middot; {selected.country}
         </span>
@@ -115,7 +109,8 @@ export function Product() {
         <div className="rounded-3xl border border-line bg-card p-6 dark:border-dark-line dark:bg-dark-card">
           <div className="flex items-center justify-between">
             <h2 className="font-display text-lg text-ink dark:text-ivory">Delivered cost</h2>
-            <span className={`rounded-full px-3 py-1 text-xs font-semibold ${BADGE_STYLES[badge.tone]}`}>
+            <span className={`flex items-center gap-1 rounded-full px-3 py-1 text-xs font-semibold ${BADGE_STYLES[badge.tone]}`}>
+              <BadgeIcon size={14} aria-hidden="true" />
               {badge.label}
             </span>
           </div>
@@ -198,7 +193,7 @@ export function Product() {
               const isSelected = item.id === selected.id;
               const isLowest = item.landedCost.totalUSD === lowestTotal;
               const itemBadge = getBadge(item);
-              const mkt = MARKETPLACE_INFO[item.marketplace];
+              const ItemBadgeIcon = BADGE_ICON[itemBadge.tone];
               return (
                 <button
                   key={item.id}
@@ -217,13 +212,7 @@ export function Product() {
                   <div className="flex items-center justify-between gap-2">
                     <div className="flex items-center gap-2">
                       <Flag code={item.countryCode} />
-                      <span
-                        className="flex h-6 w-6 items-center justify-center rounded-full text-[10px] font-semibold text-ivory"
-                        style={{ backgroundColor: mkt.color }}
-                        aria-hidden="true"
-                      >
-                        {mkt.code}
-                      </span>
+                      <MarketplaceMark marketplace={item.marketplace} size={24} />
                       <span className="text-xs text-ink/60 dark:text-ivory/60">{item.marketplace}</span>
                     </div>
                     {isLowest && (
@@ -241,7 +230,8 @@ export function Product() {
                     shipping, duty &amp; tax
                   </span>
                   <div className="flex items-center justify-between">
-                    <span className={`inline-flex rounded-full px-2 py-0.5 text-[10px] font-semibold ${BADGE_STYLES[itemBadge.tone]}`}>
+                    <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-semibold ${BADGE_STYLES[itemBadge.tone]}`}>
+                      <ItemBadgeIcon size={10} aria-hidden="true" />
                       {itemBadge.label}
                     </span>
                     <span className="text-xs text-ink/50 dark:text-ivory/50">{item.deliveryDays} days</span>

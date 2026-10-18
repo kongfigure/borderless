@@ -4,8 +4,8 @@ import type { Category, Condition, Product } from "@shared/types";
 import { landedCost, trustVerdict } from "@shared/calculations";
 import { fetchProducts } from "@/lib/api";
 import { Flag } from "@/components/Flag";
+import { MarketplaceMark } from "@/components/MarketplaceMark";
 import { LearnTip } from "@/components/LearnTip";
-import { MARKETPLACE_INFO } from "@/lib/marketplaces";
 
 const CATEGORY_ICON = { Furniture: Armchair, "Home Goods": HomeIcon, Clothing: Shirt } as const;
 const CATEGORIES: Category[] = ["Furniture", "Home Goods", "Clothing"];
@@ -138,7 +138,6 @@ export function Resale() {
         <div className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {scored.map((product) => {
             const Icon = CATEGORY_ICON[product.category];
-            const mkt = MARKETPLACE_INFO[product.marketplace];
             return (
               <div
                 key={product.id}
@@ -161,13 +160,7 @@ export function Resale() {
 
                 <div className="flex items-center gap-2">
                   <Flag code={product.countryCode} />
-                  <span
-                    className="flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-semibold text-ivory"
-                    style={{ backgroundColor: mkt.color }}
-                    aria-hidden="true"
-                  >
-                    {mkt.code}
-                  </span>
+                  <MarketplaceMark marketplace={product.marketplace} size={20} />
                   <span className="text-xs text-ink/50 dark:text-ivory/50">{product.marketplace}</span>
                 </div>
 

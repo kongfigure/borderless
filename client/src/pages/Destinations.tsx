@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { Flag } from "@/components/Flag";
+import { MarketplaceMark } from "@/components/MarketplaceMark";
 import { LearnTip } from "@/components/LearnTip";
-import { MARKETPLACE_INFO } from "@/lib/marketplaces";
 import { DESTINATIONS } from "@/lib/destinations";
 
 export function Destinations() {
@@ -34,14 +34,12 @@ export function Destinations() {
             <div className="flex items-center justify-between">
               <div className="flex -space-x-2">
                 {hub.marketplaces.map((m) => (
-                  <span
+                  <MarketplaceMark
                     key={m}
-                    className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-card text-xs font-semibold text-ivory dark:border-dark-card"
-                    style={{ backgroundColor: MARKETPLACE_INFO[m].color }}
-                    aria-hidden="true"
-                  >
-                    {MARKETPLACE_INFO[m].code}
-                  </span>
+                    marketplace={m}
+                    size={32}
+                    className="border-2 border-card dark:border-dark-card"
+                  />
                 ))}
               </div>
               <span className="flex items-center gap-1 text-sm font-medium text-forest dark:text-gold">

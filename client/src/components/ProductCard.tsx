@@ -1,9 +1,9 @@
-import { Armchair, Bookmark, Home as HomeIcon, Shirt } from "lucide-react";
+import { Armchair, Heart, Home as HomeIcon, Shirt } from "lucide-react";
 import { Link } from "react-router-dom";
 import type { ScoredProduct } from "@shared/types";
 import { Flag } from "./Flag";
-import { getBadge, BADGE_STYLES } from "@/lib/verdict";
-import { MARKETPLACE_INFO } from "@/lib/marketplaces";
+import { MarketplaceMark } from "./MarketplaceMark";
+import { getBadge, BADGE_ICON, BADGE_STYLES } from "@/lib/verdict";
 
 const CATEGORY_ICON = { Furniture: Armchair, "Home Goods": HomeIcon, Clothing: Shirt } as const;
 
@@ -22,7 +22,7 @@ export function ProductCard({
 }) {
   const Icon = CATEGORY_ICON[product.category];
   const badge = getBadge(product);
-  const marketplace = MARKETPLACE_INFO[product.marketplace];
+  const BadgeIcon = BADGE_ICON[badge.tone];
 
   return (
     <div className="flex flex-col gap-4 rounded-3xl border border-line bg-card p-4 transition-transform hover:-translate-y-1 dark:border-dark-line dark:bg-dark-card">
@@ -31,7 +31,10 @@ export function ProductCard({
           className={`relative flex h-40 items-center justify-center rounded-2xl ${TILE_TONES[tileIndex % TILE_TONES.length]}`}
         >
           <Icon size={48} strokeWidth={1.5} className="text-forest dark:text-gold" aria-hidden="true" />
-          <span className={`absolute left-3 top-3 rounded-full px-3 py-1 text-xs font-semibold ${BADGE_STYLES[badge.tone]}`}>
+          <span
+            className={`absolute left-3 top-3 flex items-center gap-1 rounded-full px-3 py-1 text-xs font-semibold ${BADGE_STYLES[badge.tone]}`}
+          >
+            <BadgeIcon size={12} aria-hidden="true" />
             {badge.label}
           </span>
         </div>
@@ -39,13 +42,7 @@ export function ProductCard({
         <div className="flex flex-col gap-1 px-1">
           <div className="flex items-center gap-2">
             <Flag code={product.countryCode} />
-            <span
-              className="flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-semibold text-ivory"
-              style={{ backgroundColor: marketplace.color }}
-              aria-hidden="true"
-            >
-              {marketplace.code}
-            </span>
+            <MarketplaceMark marketplace={product.marketplace} size={20} />
             <span className="text-xs text-ink/50 dark:text-ivory/50">{product.marketplace}</span>
           </div>
 
@@ -69,7 +66,7 @@ export function ProductCard({
         aria-pressed={saved}
         className="flex min-h-[44px] items-center justify-center gap-2 rounded-full border border-line text-sm font-medium text-ink transition-colors hover:border-forest hover:text-forest dark:border-dark-line dark:text-ivory dark:hover:border-gold dark:hover:text-gold"
       >
-        <Bookmark size={16} className={saved ? "fill-current" : ""} aria-hidden="true" />
+        <Heart size={16} className={saved ? "fill-current" : ""} aria-hidden="true" />
         {saved ? "Saved" : "Save"}
       </button>
     </div>

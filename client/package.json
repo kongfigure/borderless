@@ -10,11 +10,15 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "country-flag-icons": "^1.6.20",
     "framer-motion": "^14.3.0",
     "lucide-react": "^1.59.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
-    "react-router-dom": "^7.18.4"
+    "react-router-dom": "^7.18.4",
+    "react-simple-maps": "^5.0.5",
+    "simple-icons": "^16.35.0",
+    "world-atlas": "^2.0.2"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.3.3",

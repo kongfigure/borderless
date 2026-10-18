@@ -5,8 +5,8 @@ import type { Category, Product } from "@shared/types";
 import { landedCost, trustVerdict } from "@shared/calculations";
 import { fetchProducts } from "@/lib/api";
 import { DESTINATIONS } from "@/lib/destinations";
-import { MARKETPLACE_INFO } from "@/lib/marketplaces";
 import { Flag } from "@/components/Flag";
+import { MarketplaceMark } from "@/components/MarketplaceMark";
 import { ProductCard } from "@/components/ProductCard";
 import { LearnTip } from "@/components/LearnTip";
 
@@ -60,13 +60,7 @@ export function DestinationCity() {
           <div className="mt-4 flex flex-col gap-3">
             {hub.marketplaces.map((m) => (
               <div key={m} className="flex items-center gap-3">
-                <span
-                  className="flex h-9 w-9 items-center justify-center rounded-full font-display text-sm text-ivory"
-                  style={{ backgroundColor: MARKETPLACE_INFO[m].color }}
-                  aria-hidden="true"
-                >
-                  {MARKETPLACE_INFO[m].code}
-                </span>
+                <MarketplaceMark marketplace={m} size={36} />
                 <div className="flex items-center gap-2">
                   <Flag code={hub.countryCode} />
                   <span className="text-sm font-medium text-ink dark:text-ivory">{m}</span>

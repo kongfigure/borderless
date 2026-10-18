@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { Users } from "lucide-react";
 import { Flag } from "@/components/Flag";
+import { MarketplaceMark } from "@/components/MarketplaceMark";
 import { LearnTip } from "@/components/LearnTip";
-import { MARKETPLACE_INFO } from "@/lib/marketplaces";
 import { GROUP_BUYS, SHARED_CONTAINER_MULTIPLIER } from "@/lib/groupBuys";
 
 const STORAGE_KEY = "borderless-group-buy-joined";
@@ -62,7 +62,6 @@ export function GroupBuy() {
           const savingsUSD = round2(gb.individualShippingUSD - perPersonShippingUSD);
           const savingsPercent = Math.round((savingsUSD / gb.individualShippingUSD) * 100);
           const progress = Math.min(100, (currentParticipants / gb.targetParticipants) * 100);
-          const mkt = MARKETPLACE_INFO[gb.marketplace];
 
           return (
             <div
@@ -71,13 +70,7 @@ export function GroupBuy() {
             >
               <div className="flex items-center gap-2">
                 <Flag code={gb.countryCode} />
-                <span
-                  className="flex h-6 w-6 items-center justify-center rounded-full text-[10px] font-semibold text-ivory"
-                  style={{ backgroundColor: mkt.color }}
-                  aria-hidden="true"
-                >
-                  {mkt.code}
-                </span>
+                <MarketplaceMark marketplace={gb.marketplace} size={24} />
                 <span className="text-xs text-ink/50 dark:text-ivory/50">{gb.marketplace}</span>
               </div>
 

@@ -1,3 +1,4 @@
+import { Clock, HelpCircle, ShieldAlert, ShieldCheck } from "lucide-react";
 import type { ScoredProduct } from "@shared/types";
 
 export type BadgeTone = "good" | "warn" | "bad" | "neutral";
@@ -31,3 +32,10 @@ export const BADGE_STYLES: Record<BadgeTone, string> = {
   bad: "bg-bad-soft text-bad",
   neutral: "bg-line text-ink/60 dark:bg-dark-line dark:text-ivory/60",
 };
+
+export const BADGE_ICON = {
+  good: ShieldCheck,
+  warn: Clock,
+  bad: ShieldAlert,
+  neutral: HelpCircle,
+} as const;

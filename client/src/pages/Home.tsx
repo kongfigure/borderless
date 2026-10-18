@@ -13,11 +13,12 @@ import {
   ThumbsDown,
   Users,
 } from "lucide-react";
-import type { Product } from "@shared/types";
+import type { Marketplace, Product } from "@shared/types";
 import { landedCost, trustVerdict } from "@shared/calculations";
 import { fetchProducts } from "@/lib/api";
 import { ProductCard } from "@/components/ProductCard";
 import { Flag } from "@/components/Flag";
+import { MarketplaceMark } from "@/components/MarketplaceMark";
 import { DESTINATIONS } from "@/lib/destinations";
 import { hasAnyPreference, loadPreferences } from "@/lib/preferences";
 import { recommend } from "@/lib/recommend";
@@ -28,14 +29,14 @@ const categories = [
   { label: "Clothing", icon: Shirt },
 ];
 
-const stores = [
-  { name: "Taobao", code: "T", color: "#B33A2E", country: "China" },
-  { name: "Rakuten", code: "R", color: "#8A2E2E", country: "Japan" },
-  { name: "Coupang", code: "C", color: "#C3A77A", country: "South Korea" },
-  { name: "Naver Shopping", code: "N", color: "#234C3B", country: "South Korea" },
-  { name: "Flipkart", code: "F", color: "#2F6350", country: "India" },
-  { name: "Mercado Libre", code: "M", color: "#C3A77A", country: "Argentina" },
-  { name: "Vinted", code: "V", color: "#234C3B", country: "Lithuania" },
+const stores: { name: Marketplace; country: string }[] = [
+  { name: "Taobao", country: "China" },
+  { name: "Rakuten", country: "Japan" },
+  { name: "Coupang", country: "South Korea" },
+  { name: "Naver Shopping", country: "South Korea" },
+  { name: "Flipkart", country: "India" },
+  { name: "Mercado Libre", country: "Argentina" },
+  { name: "Vinted", country: "Lithuania" },
 ];
 
 export function Home() {
@@ -177,13 +178,7 @@ export function Home() {
               key={store.name}
               className="flex items-center gap-3 rounded-full border border-line bg-card py-2 pl-2 pr-5 dark:border-dark-line dark:bg-dark-card"
             >
-              <span
-                className="flex h-9 w-9 items-center justify-center rounded-full font-display text-sm text-ivory"
-                style={{ backgroundColor: store.color }}
-                aria-hidden="true"
-              >
-                {store.code}
-              </span>
+              <MarketplaceMark marketplace={store.name} size={36} />
               <div>
                 <p className="text-sm font-medium text-ink dark:text-ivory">{store.name}</p>
                 <p className="text-xs text-ink/50 dark:text-ivory/50">{store.country}</p>
