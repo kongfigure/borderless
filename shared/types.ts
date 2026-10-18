@@ -75,6 +75,8 @@ export interface Product {
   comparisonGroup?: string;
   /** Present only on secondhand/vintage listings. */
   condition?: Condition;
+  /** Curated flag for "gift" search intents — not derived from price or category. */
+  giftable?: boolean;
   /** Always true. All product data in this app is sample/demo data. */
   isSample: true;
 }

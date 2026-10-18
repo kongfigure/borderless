@@ -14,6 +14,9 @@ const MODEL = "claude-haiku-4-5-20251001";
  * persisted to disk so it survives restarts, since the point is to bound
  * real spend, not just spend-per-process. */
 const MAX_LIVE_CALLS = 200;
+/** A hung model call must never hang the chat — callers always get a
+ * null (and fall back to a template) within this many milliseconds. */
+const REQUEST_TIMEOUT_MS = 8000;
 
 const responseCache = new Map<string, string>();
 let cacheLoaded = false;
@@ -119,12 +122,15 @@ export async function generate(options: GenerateOptions): Promise<GenerateResult
 
   try {
     const anthropic = new Anthropic({ apiKey });
-    const message = await anthropic.messages.create({
-      model: MODEL,
-      max_tokens: options.maxTokens,
-      ...(options.system ? { system: options.system } : {}),
-      messages,
-    });
+    const message = await anthropic.messages.create(
+      {
+        model: MODEL,
+        max_tokens: options.maxTokens,
+        ...(options.system ? { system: options.system } : {}),
+        messages,
+      },
+      { timeout: REQUEST_TIMEOUT_MS }
+    );
     const text = message.content
       .filter((block): block is Anthropic.TextBlock => block.type === "text")
       .map((block) => block.text)

@@ -1,20 +1,86 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { Headphones, Mic, MessageCircle, Send, Square, Volume2, VolumeX, X } from "lucide-react";
-import type { Product } from "@shared/types";
+import {
+  Armchair,
+  Headphones,
+  Heart,
+  Home as HomeIcon,
+  Mic,
+  MessageCircle,
+  Send,
+  Shirt,
+  Square,
+  Volume2,
+  VolumeX,
+  X,
+} from "lucide-react";
+import type { Category, Marketplace, Product } from "@shared/types";
 import { landedCost, trustVerdict } from "@shared/calculations";
-import { fetchProducts, askAssistant, type AssistantContext } from "@/lib/api";
+import { fetchProducts, askAssistant, type AssistantContext, type AssistantProductCard } from "@/lib/api";
 import { hasAnyPreference, loadPreferences } from "@/lib/preferences";
+import { addToCart, loadCart } from "@/lib/cart";
+import { Flag } from "./Flag";
+import { MarketplaceMark } from "./MarketplaceMark";
 import { SPEECH_UNSUPPORTED_MESSAGE, useSpeechToText } from "@/hooks/useSpeechToText";
 
 const MAX_TURNS = 10;
 const MAX_VISIBLE_PRODUCTS = 20;
 
+const CATEGORY_ICON = { Furniture: Armchair, "Home Goods": HomeIcon, Clothing: Shirt } as const;
+
+const VERDICT_LABEL = { looks_good: "Looks good", skip: "Skip", not_enough_info: "Not enough info" } as const;
+const VERDICT_STYLE = {
+  looks_good: "bg-good-soft text-good",
+  skip: "bg-bad-soft text-bad",
+  not_enough_info: "bg-line text-ink/60 dark:bg-dark-line dark:text-ivory/60",
+} as const;
+
 interface ChatMessage {
   id: string;
   role: "user" | "assistant";
   content: string;
-  source?: "live" | "fallback";
+  source?: "live" | "fallback" | "deterministic";
+  products?: AssistantProductCard[];
+}
+
+function AssistantProductCardTile({ card }: { card: AssistantProductCard }) {
+  const Icon = CATEGORY_ICON[card.category as Category] ?? HomeIcon;
+  const [added, setAdded] = useState(false);
+  const badgeLabel = card.fulfillment === "pre_order" ? "Pre-order" : VERDICT_LABEL[card.verdict];
+  const badgeStyle = card.fulfillment === "pre_order" ? "bg-warn-soft text-warn" : VERDICT_STYLE[card.verdict];
+
+  return (
+    <div className="flex items-center gap-3 rounded-2xl border border-line bg-ivory p-2.5 dark:border-dark-line dark:bg-dark-bg">
+      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-forest/10 dark:bg-gold/15">
+        <Icon size={22} strokeWidth={1.5} className="text-forest dark:text-gold" aria-hidden="true" />
+      </div>
+      <div className="flex-1 overflow-hidden">
+        <p className="truncate text-sm font-medium text-ink dark:text-ivory">{card.title}</p>
+        <div className="mt-0.5 flex items-center gap-1.5 text-xs text-ink/60 dark:text-ivory/60">
+          <Flag code={card.countryCode} />
+          <MarketplaceMark marketplace={card.marketplace as Marketplace} size={14} />
+          <span>{card.marketplace}</span>
+        </div>
+        <div className="mt-1 flex items-center gap-2">
+          <span className="text-sm font-semibold text-forest dark:text-gold">${card.totalUSD.toFixed(2)}</span>
+          <span className="text-xs text-ink/50 dark:text-ivory/50">{card.deliveryDays}d</span>
+          <span className={`rounded-full px-2 py-0.5 text-[10px] font-medium ${badgeStyle}`}>{badgeLabel}</span>
+        </div>
+      </div>
+      <button
+        type="button"
+        onClick={() => {
+          addToCart({ itemName: card.title, priceUSD: card.totalUSD, category: card.category });
+          setAdded(true);
+        }}
+        aria-pressed={added}
+        className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-line text-ink/70 transition-colors hover:border-forest hover:text-forest dark:border-dark-line dark:text-ivory/70 dark:hover:border-gold dark:hover:text-gold"
+        aria-label={added ? "Added to bag" : "Add to bag"}
+      >
+        <Heart size={14} className={added ? "fill-current" : ""} aria-hidden="true" />
+      </button>
+    </div>
+  );
 }
 
 export function AssistantWidget() {
@@ -60,25 +126,31 @@ export function AssistantWidget() {
     };
   }, []);
 
-  const context: AssistantContext = useMemo(() => {
-    const visibleProducts = (products ?? []).slice(0, MAX_VISIBLE_PRODUCTS).map((p) => ({
-      id: p.id,
-      title: p.title,
-      marketplace: p.marketplace,
-      country: p.country,
-      totalUSD: landedCost(p).totalUSD,
-      verdict: trustVerdict(p).verdict,
-    }));
+  const visibleProducts = useMemo(
+    () =>
+      (products ?? []).slice(0, MAX_VISIBLE_PRODUCTS).map((p) => ({
+        id: p.id,
+        title: p.title,
+        marketplace: p.marketplace,
+        country: p.country,
+        totalUSD: landedCost(p).totalUSD,
+        verdict: trustVerdict(p).verdict,
+      })),
+    [products]
+  );
+
+  function buildContext(): AssistantContext {
     const prefs = loadPreferences();
+    const cart = loadCart().map((item) => ({ id: item.id, title: item.itemName, totalUSD: item.priceUSD }));
     return {
       route: location.pathname,
       visibleProducts,
-      cart: [],
+      cart,
       preferences: hasAnyPreference(prefs)
         ? { budgetUSD: prefs.budgetUSD, categories: prefs.categories, deliveryDeadlineDays: prefs.deliveryDeadlineDays }
         : null,
     };
-  }, [products, location.pathname]);
+  }
 
   function stopSpeaking() {
     window.speechSynthesis?.cancel();
@@ -130,13 +202,14 @@ export function AssistantWidget() {
       const result = await askAssistant({
         message: trimmed,
         history: messages.slice(-MAX_TURNS).map(({ role, content }) => ({ role, content })),
-        context,
+        context: buildContext(),
       });
       const replyTurn: ChatMessage = {
         id: crypto.randomUUID(),
         role: "assistant",
         content: result.reply,
         source: result.source,
+        products: result.products,
       };
       setMessages((prev) => [...prev, replyTurn].slice(-MAX_TURNS));
       speak(result.reply, () => {
@@ -222,14 +295,21 @@ export function AssistantWidget() {
               ) : (
                 <div
                   key={m.id}
-                  className="mr-auto max-w-[85%] rounded-2xl rounded-tl-sm border border-line bg-ivory px-4 py-2.5 text-sm text-ink dark:border-dark-line dark:bg-dark-bg dark:text-ivory"
+                  className="mr-auto flex max-w-[95%] flex-col gap-2 rounded-2xl rounded-tl-sm border border-line bg-ivory px-4 py-2.5 text-sm text-ink dark:border-dark-line dark:bg-dark-bg dark:text-ivory"
                 >
                   {m.source === "fallback" && (
-                    <span className="mb-1 block rounded-full bg-line px-2 py-0.5 text-[10px] font-medium text-ink/60 dark:bg-dark-line dark:text-ivory/60">
-                      Offline
+                    <span className="block w-fit rounded-full bg-line px-2 py-0.5 text-[10px] font-medium text-ink/60 dark:bg-dark-line dark:text-ivory/60">
+                      Offline mode
                     </span>
                   )}
                   {m.content}
+                  {m.products && m.products.length > 0 && (
+                    <div className="flex flex-col gap-2">
+                      {m.products.map((card) => (
+                        <AssistantProductCardTile key={card.id} card={card} />
+                      ))}
+                    </div>
+                  )}
                 </div>
               )
             )}

@@ -292,6 +292,7 @@
       "itemPriceUSD": 19,
       "shippingUSD": 9,
       "fulfillment": "in_stock",
+      "giftable": true,
       "condition": "Good",
       "trust": {
         "categoryMedianPriceUSD": 24,
@@ -428,6 +429,7 @@
       "itemPriceUSD": 29,
       "shippingUSD": 10,
       "fulfillment": "in_stock",
+      "giftable": true,
       "trust": {
         "categoryMedianPriceUSD": 40,
         "imageReuseCount": 0,
@@ -561,6 +563,7 @@
       "itemPriceUSD": 22,
       "shippingUSD": 9,
       "fulfillment": "in_stock",
+      "giftable": true,
       "trust": {
         "categoryMedianPriceUSD": 26,
         "imageReuseCount": 2,
@@ -671,6 +674,7 @@
       "itemPriceUSD": 9,
       "shippingUSD": 6,
       "fulfillment": "in_stock",
+      "giftable": true,
       "trust": {
         "categoryMedianPriceUSD": 24,
         "imageReuseCount": 6,

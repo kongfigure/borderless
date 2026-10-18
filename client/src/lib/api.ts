@@ -139,9 +139,22 @@ export interface AssistantRequest {
   context: AssistantContext;
 }
 
+export interface AssistantProductCard {
+  id: string;
+  title: string;
+  marketplace: string;
+  countryCode: string;
+  category: string;
+  totalUSD: number;
+  deliveryDays: number;
+  fulfillment: "in_stock" | "pre_order";
+  verdict: "looks_good" | "skip" | "not_enough_info";
+}
+
 export interface AssistantResponse {
   reply: string;
-  source: "live" | "fallback";
+  source: "live" | "fallback" | "deterministic";
+  products?: AssistantProductCard[];
 }
 
 export async function askAssistant(input: AssistantRequest): Promise<AssistantResponse> {

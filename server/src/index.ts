@@ -193,7 +193,8 @@ app.post("/api/assistant", async (req, res) => {
   }
 
   try {
-    const result = await assistantReply({ message: message.trim(), history, context });
+    const data = loadProducts();
+    const result = await assistantReply({ message: message.trim(), history, context }, data.products);
     res.json(result);
   } catch (err) {
     console.error("[/api/assistant] error:", err);
