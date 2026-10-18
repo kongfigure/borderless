@@ -7,8 +7,36 @@ function getSpeechRecognitionCtor(): typeof SpeechRecognition | undefined {
 
 export const SPEECH_RECOGNITION_SUPPORTED = typeof window !== "undefined" && !!getSpeechRecognitionCtor();
 
-export const SPEECH_UNSUPPORTED_MESSAGE =
-  "Voice input isn't supported in this browser, try Chrome or Safari.";
+export const SPEECH_UNSUPPORTED_MESSAGE = "Voice input works in Chrome or Edge.";
+
+function messageForErrorCode(code: string): string | null {
+  switch (code) {
+    case "not-allowed":
+    case "service-not-allowed":
+      return "Microphone is blocked. Click the lock icon in the address bar, allow the microphone, then reload.";
+    case "no-speech":
+      return "I didn't hear anything. Try again and speak after the Listening label appears.";
+    case "audio-capture":
+      return "No microphone found or another app is using it.";
+    case "network":
+      return "Speech recognition needs an internet connection and a browser that supports it. Open this site in Chrome.";
+    case "aborted":
+      return null;
+    default:
+      return `Voice input error: ${code}`;
+  }
+}
+
+interface ActiveRecognition {
+  recognition: SpeechRecognition;
+  abort: () => void;
+}
+
+/** Only one SpeechRecognition instance may run at a time across the app —
+ * the hero search box and the assistant's hands-free mode share a single
+ * microphone, so starting one here forcibly aborts whichever instance
+ * (from either call site) currently owns it. */
+let active: ActiveRecognition | null = null;
 
 interface UseSpeechToTextOptions {
   /** Called with the live transcript (interim + final) as the user speaks. */
@@ -25,6 +53,7 @@ export function useSpeechToText({ onTranscript, onFinish, lang = "en-US" }: UseS
   const [listening, setListening] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const recognitionRef = useRef<SpeechRecognition | null>(null);
+  const listeningRef = useRef(false);
   const transcriptRef = useRef("");
 
   const stop = useCallback(() => {
@@ -38,12 +67,20 @@ export function useSpeechToText({ onTranscript, onFinish, lang = "en-US" }: UseS
       return;
     }
 
+    // Guard against InvalidStateError: never call start() on an instance
+    // that's already running.
+    if (listeningRef.current) return;
+
+    // Hand off the shared mic: forcibly abort whoever else is listening.
+    active?.abort();
+    active = null;
+
     setError(null);
     transcriptRef.current = "";
 
     const recognition = new Ctor();
     recognition.lang = lang;
-    recognition.continuous = true;
+    recognition.continuous = false;
     recognition.interimResults = true;
 
     recognition.onresult = (event) => {
@@ -60,31 +97,47 @@ export function useSpeechToText({ onTranscript, onFinish, lang = "en-US" }: UseS
     };
 
     recognition.onerror = (event) => {
-      if (event.error === "not-allowed" || event.error === "service-not-allowed") {
-        setError("Microphone access was denied. Allow microphone access to use voice input.");
-      } else if (event.error !== "no-speech" && event.error !== "aborted") {
-        setError("Voice input ran into a problem. Try again or type instead.");
-      }
+      console.error("[useSpeechToText] SpeechRecognition error:", event.error);
+      const message = messageForErrorCode(event.error);
+      if (message) setError(message);
     };
 
     recognition.onend = () => {
+      listeningRef.current = false;
       setListening(false);
+      if (active?.recognition === recognition) active = null;
       onFinish?.(transcriptRef.current.trim());
     };
 
     recognitionRef.current = recognition;
+    listeningRef.current = true;
+    active = {
+      recognition,
+      abort: () => {
+        recognition.onresult = null;
+        recognition.onerror = null;
+        recognition.onend = null;
+        recognition.abort();
+        listeningRef.current = false;
+        setListening(false);
+      },
+    };
+
     recognition.start();
     setListening(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lang]);
 
   const toggle = useCallback(() => {
-    if (listening) stop();
+    if (listeningRef.current) stop();
     else start();
-  }, [listening, start, stop]);
+  }, [start, stop]);
 
   useEffect(() => {
-    return () => recognitionRef.current?.stop();
+    return () => {
+      if (active?.recognition === recognitionRef.current) active = null;
+      recognitionRef.current?.stop();
+    };
   }, []);
 
   return { listening, error, start, stop, toggle, supported: SPEECH_RECOGNITION_SUPPORTED };

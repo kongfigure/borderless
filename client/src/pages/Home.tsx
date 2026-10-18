@@ -25,6 +25,7 @@ import { recommend } from "@/lib/recommend";
 import { SPEECH_UNSUPPORTED_MESSAGE, useSpeechToText } from "@/hooks/useSpeechToText";
 import { IconicProductCard } from "@/components/IconicProductCard";
 import { ICONIC_PRODUCTS } from "@/lib/iconicProducts";
+import { HeroIconCluster } from "@/components/HeroIconCluster";
 
 const categories = [
   { label: "Furniture", icon: Armchair },
@@ -126,11 +127,14 @@ export function Home() {
             <button
               type="button"
               onClick={toggleSpeech}
+              disabled={!speechSupported}
               aria-pressed={speechListening}
               className={`flex min-h-[44px] items-center gap-2 rounded-full border px-4 py-2 text-sm transition-colors ${
-                speechListening
-                  ? "border-gold bg-gold/20 text-ivory"
-                  : "border-ivory/40 text-ivory/90 hover:border-ivory/70"
+                !speechSupported
+                  ? "cursor-not-allowed border-ivory/20 text-ivory/40"
+                  : speechListening
+                    ? "border-gold bg-gold/20 text-ivory"
+                    : "border-ivory/40 text-ivory/90 hover:border-ivory/70"
               }`}
             >
               <Mic size={16} className={speechListening ? "animate-pulse" : ""} aria-hidden="true" />
@@ -150,37 +154,7 @@ export function Home() {
           )}
         </div>
 
-        <div className="relative hidden min-h-[320px] lg:block" aria-hidden="true">
-          <div
-            className="absolute right-[18%] top-[14%] h-40 w-32 rotate-[-6deg] rounded-2xl shadow-xl"
-            style={{ background: "linear-gradient(160deg, #e8e2d4 0%, #d8c4a0 100%)" }}
-          />
-          <div
-            className="absolute right-[32%] top-[30%] h-44 w-36 rotate-[4deg] rounded-2xl shadow-xl"
-            style={{ background: "linear-gradient(160deg, #2f6350 0%, #234c3b 100%)" }}
-          />
-          <div
-            className="absolute right-[8%] top-[42%] h-36 w-28 rotate-[10deg] rounded-2xl shadow-xl"
-            style={{ background: "linear-gradient(160deg, #f7f5f0 0%, #d8c4a0 100%)" }}
-          />
-
-          <motion.span
-            initial={{ opacity: 0, y: 6 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="absolute left-[6%] top-[20%] rounded-full bg-ivory px-4 py-2 text-xs font-medium text-ink shadow-md"
-          >
-            Shanghai · Taobao · $34 to your door
-          </motion.span>
-          <motion.span
-            initial={{ opacity: 0, y: 6 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.5 }}
-            className="absolute bottom-[14%] right-[14%] rounded-full bg-good-soft px-4 py-1.5 text-xs font-semibold text-good shadow-md"
-          >
-            Looks good
-          </motion.span>
-        </div>
+        <HeroIconCluster />
       </motion.section>
 
       <section className="mt-16">

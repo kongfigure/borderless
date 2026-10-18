@@ -68,6 +68,13 @@ export function Search() {
   }, [q]);
 
   useEffect(() => {
+    const marketplaceParam = params.get("marketplace");
+    if (marketplaceParam && MARKETPLACE_OPTIONS.includes(marketplaceParam as Marketplace)) {
+      setMarketplace(marketplaceParam as Marketplace);
+    }
+  }, [params]);
+
+  useEffect(() => {
     const trimmed = q.trim();
     if (!trimmed) {
       setData(null);

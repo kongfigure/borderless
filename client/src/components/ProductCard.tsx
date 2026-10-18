@@ -1,11 +1,11 @@
-import { Armchair, Heart, Home as HomeIcon, Shirt } from "lucide-react";
+import { Heart } from "lucide-react";
 import { Link } from "react-router-dom";
 import type { ScoredProduct } from "@shared/types";
 import { Flag } from "./Flag";
 import { MarketplaceMark } from "./MarketplaceMark";
+import { ProductPhotoTile } from "./ProductPhotoTile";
 import { getBadge, BADGE_ICON, BADGE_STYLES } from "@/lib/verdict";
-
-const CATEGORY_ICON = { Furniture: Armchair, "Home Goods": HomeIcon, Clothing: Shirt } as const;
+import { CATEGORY_ICON } from "@/lib/categoryIcon";
 
 const TILE_TONES = ["bg-forest/10", "bg-gold/15", "bg-forest/5"];
 
@@ -25,19 +25,31 @@ export function ProductCard({
   const BadgeIcon = BADGE_ICON[badge.tone];
 
   return (
-    <div className="flex flex-col gap-4 rounded-3xl border border-line bg-card p-4 transition-transform hover:-translate-y-1 dark:border-dark-line dark:bg-dark-card">
+    <div className="relative flex flex-col gap-4 rounded-3xl border border-line bg-card p-4 transition-transform hover:-translate-y-1 dark:border-dark-line dark:bg-dark-card">
+      <button
+        type="button"
+        onClick={() => onSave?.(product.id)}
+        aria-pressed={saved}
+        aria-label={saved ? "Saved" : "Save"}
+        className="absolute right-7 top-7 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-ivory/90 text-ink/70 shadow-sm transition-colors hover:text-forest dark:bg-dark-bg/90 dark:text-ivory/70 dark:hover:text-gold"
+      >
+        <Heart size={16} className={saved ? "fill-current text-forest dark:text-gold" : ""} aria-hidden="true" />
+      </button>
+
       <Link to={`/product/${product.id}`} className="contents">
-        <div
-          className={`relative flex h-40 items-center justify-center rounded-2xl ${TILE_TONES[tileIndex % TILE_TONES.length]}`}
+        <ProductPhotoTile
+          imageUrl={product.imageUrl}
+          alt={product.title}
+          icon={Icon}
+          tone={TILE_TONES[tileIndex % TILE_TONES.length]}
         >
-          <Icon size={48} strokeWidth={1.5} className="text-forest dark:text-gold" aria-hidden="true" />
           <span
             className={`absolute left-3 top-3 flex items-center gap-1 rounded-full px-3 py-1 text-xs font-semibold ${BADGE_STYLES[badge.tone]}`}
           >
             <BadgeIcon size={12} aria-hidden="true" />
             {badge.label}
           </span>
-        </div>
+        </ProductPhotoTile>
 
         <div className="flex flex-col gap-1 px-1">
           <div className="flex items-center gap-2">
@@ -59,16 +71,6 @@ export function ProductCard({
           </p>
         </div>
       </Link>
-
-      <button
-        type="button"
-        onClick={() => onSave?.(product.id)}
-        aria-pressed={saved}
-        className="flex min-h-[44px] items-center justify-center gap-2 rounded-full border border-line text-sm font-medium text-ink transition-colors hover:border-forest hover:text-forest dark:border-dark-line dark:text-ivory dark:hover:border-gold dark:hover:text-gold"
-      >
-        <Heart size={16} className={saved ? "fill-current" : ""} aria-hidden="true" />
-        {saved ? "Saved" : "Save"}
-      </button>
     </div>
   );
 }

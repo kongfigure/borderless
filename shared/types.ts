@@ -56,6 +56,15 @@ export interface TrustSignals {
   certification: string | null;
 }
 
+/** Attribution for a freely-licensed Wikimedia Commons photo used as an
+ * illustrative stand-in for a listing photo — never the seller's own image. */
+export interface ImageCredit {
+  author: string;
+  licenseName: string;
+  licenseUrl: string;
+  sourceUrl: string;
+}
+
 export interface Product {
   id: string;
   title: string;
@@ -79,6 +88,11 @@ export interface Product {
   giftable?: boolean;
   /** Always true. All product data in this app is sample/demo data. */
   isSample: true;
+  /** Illustrative photo path (e.g. "/products/tb-001.jpg"), from a freely
+   * licensed Wikimedia Commons source — never the seller's own listing photo.
+   * Absent when no suitable free-licensed photo was found. */
+  imageUrl?: string;
+  imageCredit?: ImageCredit;
 }
 
 export type SignalTone = "good" | "bad" | "info";

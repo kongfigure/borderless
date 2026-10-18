@@ -335,10 +335,11 @@ export function AssistantWidget() {
             <button
               type="button"
               onClick={toggleVoiceMode}
+              disabled={!speechSupported}
               aria-pressed={voiceMode}
               aria-label={voiceMode ? "Stop hands-free voice mode" : "Start hands-free voice mode"}
               title="Hands-free voice conversation"
-              className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full transition-colors ${
+              className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full transition-colors disabled:cursor-not-allowed disabled:opacity-40 ${
                 voiceMode
                   ? "bg-gold/20 text-gold"
                   : "text-ink/50 hover:bg-line dark:text-ivory/50 dark:hover:bg-dark-line"
@@ -360,9 +361,10 @@ export function AssistantWidget() {
             <button
               type="button"
               onClick={toggleListening}
+              disabled={!speechSupported}
               aria-pressed={listening}
               aria-label={listening ? "Stop voice input" : "Use voice input"}
-              className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full transition-colors ${
+              className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full transition-colors disabled:cursor-not-allowed disabled:opacity-40 ${
                 listening
                   ? "bg-gold/20 text-gold"
                   : "text-ink/50 hover:bg-line dark:text-ivory/50 dark:hover:bg-dark-line"

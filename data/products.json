@@ -23,7 +23,14 @@
         "reviewNotes": "Multiple reviews say it runs true to size.",
         "certification": null
       },
-      "isSample": true
+      "isSample": true,
+      "imageUrl": "/products/tb-001.jpg",
+      "imageCredit": {
+        "author": "Unknown authorUnknown author",
+        "licenseName": "CC0",
+        "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Seto_linen_shirt_(Saatse_Museum).jpg"
+      }
     },
     {
       "id": "tb-002",
@@ -46,7 +53,14 @@
         "reviewNotes": "Reviewers note solid joinery; minor assembly required.",
         "certification": "FSC-certified wood (seller claim)"
       },
-      "isSample": true
+      "isSample": true,
+      "imageUrl": "/products/tb-002.jpg",
+      "imageCredit": {
+        "author": "Daderot",
+        "licenseName": "CC0",
+        "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Side_table,_1_of_2,_attributed_to_Benjamin_Goodison,_c._1730,_gilded_and_gessoed_oak_and_pine_wood_-_Kensington_Palace_-_London,_England_-_DSC03875.jpg"
+      }
     },
     {
       "id": "tb-003",
@@ -69,7 +83,14 @@
         "reviewNotes": "Too few reviews to confirm glaze durability.",
         "certification": null
       },
-      "isSample": true
+      "isSample": true,
+      "imageUrl": "/products/tb-003.jpg",
+      "imageCredit": {
+        "author": "Unknown (Wikimedia Commons)",
+        "licenseName": "CC0",
+        "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Unknown_artist_-_Dinner_Plate_-_1955.121_-_Cleveland_Museum_of_Art.jpg"
+      }
     },
     {
       "id": "tb-004",
@@ -115,7 +136,14 @@
         "reviewNotes": "Reviews mention polyester, not linen.",
         "certification": null
       },
-      "isSample": true
+      "isSample": true,
+      "imageUrl": "/products/tb-005.jpg",
+      "imageCredit": {
+        "author": "Modern Fellows",
+        "licenseName": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Button_down_dress_shirts_for_men.jpg"
+      }
     },
     {
       "id": "tb-006",
@@ -139,7 +167,14 @@
         "reviewNotes": "Reviewers say it's sturdier than expected for the price.",
         "certification": null
       },
-      "isSample": true
+      "isSample": true,
+      "imageUrl": "/products/tb-006.jpg",
+      "imageCredit": {
+        "author": "QueenCityCebu",
+        "licenseName": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Cebu_Rattan_Chair.jpg"
+      }
     },
     {
       "id": "rk-001",
@@ -162,7 +197,14 @@
         "reviewNotes": "High marks for look; several say it's pricey for the comfort level.",
         "certification": null
       },
-      "isSample": true
+      "isSample": true,
+      "imageUrl": "/products/rk-001.png",
+      "imageCredit": {
+        "author": "Nitinrameshwar1960",
+        "licenseName": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sunday.png"
+      }
     },
     {
       "id": "rk-002",
@@ -186,7 +228,14 @@
         "reviewNotes": "Reviewers like the drape and weight of the fabric.",
         "certification": null
       },
-      "isSample": true
+      "isSample": true,
+      "imageUrl": "/products/rk-002.jpg",
+      "imageCredit": {
+        "author": "Unknown authorUnknown author",
+        "licenseName": "CC0",
+        "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Seto_linen_shirt_(Saatse_Museum).jpg"
+      }
     },
     {
       "id": "rk-003",
@@ -209,7 +258,14 @@
         "reviewNotes": "Reviewers praise the finish; cord routing is tight.",
         "certification": null
       },
-      "isSample": true
+      "isSample": true,
+      "imageUrl": "/products/rk-003.jpg",
+      "imageCredit": {
+        "author": "Fahat778899",
+        "licenseName": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:TV_stand.jpg"
+      }
     },
     {
       "id": "rk-004",
@@ -232,7 +288,14 @@
         "reviewNotes": "Reviewers highlight the glaze quality.",
         "certification": null
       },
-      "isSample": true
+      "isSample": true,
+      "imageUrl": "/products/rk-004.jpg",
+      "imageCredit": {
+        "author": "Yoshi Canopus",
+        "licenseName": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Tea-coffee_and_Green_tea_sets.jpg"
+      }
     },
     {
       "id": "rk-005",
@@ -255,7 +318,14 @@
         "reviewNotes": "Reviewers say the quilting adds good warmth.",
         "certification": null
       },
-      "isSample": true
+      "isSample": true,
+      "imageUrl": "/products/rk-005.jpg",
+      "imageCredit": {
+        "author": "Pittigrilli",
+        "licenseName": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Denim_jacket_from_Dolce_%26_Gabbana_with_human_skull_on_back_made_from_Swarovski_glass_crystals.jpg"
+      }
     },
     {
       "id": "rk-006",
@@ -278,7 +348,14 @@
         "reviewNotes": "Pre-order: made to order, ships in about two weeks.",
         "certification": null
       },
-      "isSample": true
+      "isSample": true,
+      "imageUrl": "/products/rk-006.jpg",
+      "imageCredit": {
+        "author": "Th. Voekler",
+        "licenseName": "CC BY-SA 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Chinese_paper_lampshade.jpeg"
+      }
     },
     {
       "id": "rk-007",
@@ -303,7 +380,14 @@
         "reviewNotes": "Buyers say it pours cleanly with light wear on the handle.",
         "certification": null
       },
-      "isSample": true
+      "isSample": true,
+      "imageUrl": "/products/rk-007.jpg",
+      "imageCredit": {
+        "author": "Unknown (Wikimedia Commons)",
+        "licenseName": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Theepot_in_aardewerk,_collectie-_Raakvlak,_BR14-EZ-1-4-A-117.jpg"
+      }
     },
     {
       "id": "rk-008",
@@ -327,7 +411,14 @@
         "reviewNotes": "Buyers say the fabric and stitching look barely worn.",
         "certification": null
       },
-      "isSample": true
+      "isSample": true,
+      "imageUrl": "/products/rk-008.jpg",
+      "imageCredit": {
+        "author": "TykeLass",
+        "licenseName": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Monsha_Haori_%E7%B4%8B%E7%B4%97%E7%BE%BD%E7%B9%94.jpg"
+      }
     },
     {
       "id": "cp-001",
@@ -350,7 +441,14 @@
         "reviewNotes": "Consistently praised as the better value pick.",
         "certification": null
       },
-      "isSample": true
+      "isSample": true,
+      "imageUrl": "/products/cp-001.jpg",
+      "imageCredit": {
+        "author": "Shixart1985",
+        "licenseName": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:A_plush_green_velvet_armchair_occupies_the_corner_of_a_bright_living_room.jpg"
+      }
     },
     {
       "id": "cp-002",
@@ -372,7 +470,14 @@
         "reviewNotes": "Reviewers say it's as soft as it looks.",
         "certification": null
       },
-      "isSample": true
+      "isSample": true,
+      "imageUrl": "/products/cp-002.jpg",
+      "imageCredit": {
+        "author": "Neoclassicism Enthusiast",
+        "licenseName": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Pacha_cu_M%C3%A2ner_armchair,_by_Pierre_Paulin_for_GUBI,_1975,_at_sale_at_The_Edit_shop_(Strada_Icoanei_no._20),_Bucharest,_Romania.jpg"
+      }
     },
     {
       "id": "cp-003",
@@ -394,7 +499,14 @@
         "reviewNotes": "Reviewers say the fleece lining runs warm.",
         "certification": null
       },
-      "isSample": true
+      "isSample": true,
+      "imageUrl": "/products/cp-003.jpg",
+      "imageCredit": {
+        "author": "Mart van Ginkel Textielbedrukking",
+        "licenseName": "CC BY-SA 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Trui,_wit_met_grijs_gem%C3%AAleerd,_met_capuchon,_lange_mouwen,_opdruk_%E2%80%9CTUIGCOMMISSIE%E2%80%9D,_objectnr_86849.JPG"
+      }
     },
     {
       "id": "nv-001",
@@ -416,7 +528,14 @@
         "reviewNotes": "Reviewers highlight careful packaging.",
         "certification": null
       },
-      "isSample": true
+      "isSample": true,
+      "imageUrl": "/products/nv-001.jpg",
+      "imageCredit": {
+        "author": "Maw &amp; Co.",
+        "licenseName": "CC0",
+        "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Clevelandart_2017.208.jpg"
+      }
     },
     {
       "id": "nv-002",
@@ -439,7 +558,14 @@
         "reviewNotes": "Too few reviews yet to confirm chip resistance.",
         "certification": null
       },
-      "isSample": true
+      "isSample": true,
+      "imageUrl": "/products/nv-002.jpg",
+      "imageCredit": {
+        "author": "Chriewue",
+        "licenseName": "CC BY 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:The_drying_process_for_hand-crafted_stoneware_bowls_Taiz%C3%A9_pottery_workshop.jpg"
+      }
     },
     {
       "id": "nv-003",
@@ -461,7 +587,14 @@
         "reviewNotes": "Reviewers say it's warmer than expected for the weight.",
         "certification": null
       },
-      "isSample": true
+      "isSample": true,
+      "imageUrl": "/products/nv-003.jpg",
+      "imageCredit": {
+        "author": "Matti Blume",
+        "licenseName": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:OutDoor_2018,_Friedrichshafen_(1X7A0285).jpg"
+      }
     },
     {
       "id": "fk-001",
@@ -483,7 +616,14 @@
         "reviewNotes": "Several reviews confirm true-to-size fit.",
         "certification": "GOTS-certified cotton (seller claim)"
       },
-      "isSample": true
+      "isSample": true,
+      "imageUrl": "/products/fk-001.jpg",
+      "imageCredit": {
+        "author": "Staff photographer for the Rhode Island School of Design Museum of Art",
+        "licenseName": "CC0",
+        "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:1790c_dress_in_a_block-printed_cotton_designed_by_William_Kilburn_01.jpg"
+      }
     },
     {
       "id": "fk-002",
@@ -505,7 +645,14 @@
         "reviewNotes": "Reviewers say the shelves are sturdy once assembled.",
         "certification": null
       },
-      "isSample": true
+      "isSample": true,
+      "imageUrl": "/products/fk-002.png",
+      "imageCredit": {
+        "author": "DALL-E, with text prompt from Aaron Lucas",
+        "licenseName": "Public domain",
+        "licenseUrl": "https://creativecommons.org/",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Encyclopedia_on_a_wooden_bookshelf.png"
+      }
     },
     {
       "id": "fk-003",
@@ -527,7 +674,14 @@
         "reviewNotes": "Reviewers say it sheds a little at first, then settles.",
         "certification": "GoodWeave-certified (seller claim)"
       },
-      "isSample": true
+      "isSample": true,
+      "imageUrl": "/products/fk-003.jpg",
+      "imageCredit": {
+        "author": "Unknown (Wikimedia Commons)",
+        "licenseName": "CC0",
+        "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Prayer_Rug_-_Iran_-_16th_century_-_MET_-_Inventory_number_17.120.124.jpg"
+      }
     },
     {
       "id": "fk-004",
@@ -550,7 +704,14 @@
         "reviewNotes": "Reviewers say it's a linen-cotton blend, not pure linen.",
         "certification": null
       },
-      "isSample": true
+      "isSample": true,
+      "imageUrl": "/products/fk-004.jpg",
+      "imageCredit": {
+        "author": "Unknown authorUnknown author",
+        "licenseName": "CC0",
+        "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Seto_linen_shirt_(Saatse_Museum).jpg"
+      }
     },
     {
       "id": "fk-005",
@@ -573,7 +734,14 @@
         "reviewNotes": "Too few reviews to confirm the brass plating holds up.",
         "certification": null
       },
-      "isSample": true
+      "isSample": true,
+      "imageUrl": "/products/fk-005.jpg",
+      "imageCredit": {
+        "author": "Gerald Bernhardt",
+        "licenseName": "CC0",
+        "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Gerald_Bernhardt,_Brass_Candle_Holder,_c._1936,_NGA_24279.jpg"
+      }
     },
     {
       "id": "ml-001",
@@ -595,7 +763,14 @@
         "reviewNotes": "Too few reviews to confirm wool content.",
         "certification": null
       },
-      "isSample": true
+      "isSample": true,
+      "imageUrl": "/products/ml-001.jpg",
+      "imageCredit": {
+        "author": "Unknown authorUnknown author",
+        "licenseName": "CC BY 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Blanket_(AM_8075-1).jpg"
+      }
     },
     {
       "id": "ml-002",
@@ -617,7 +792,14 @@
         "reviewNotes": "Reviewers say the leather softens nicely after a few weeks.",
         "certification": null
       },
-      "isSample": true
+      "isSample": true,
+      "imageUrl": "/products/ml-002.jpg",
+      "imageCredit": {
+        "author": "David Adam Kess",
+        "licenseName": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:(Zerdo,_Quito)_(leather_club_chair).jpg"
+      }
     },
     {
       "id": "ml-003",
@@ -639,7 +821,14 @@
         "reviewNotes": "Reviewers say it's warm without feeling heavy.",
         "certification": null
       },
-      "isSample": true
+      "isSample": true,
+      "imageUrl": "/products/ml-003.jpg",
+      "imageCredit": {
+        "author": "H.dav.are",
+        "licenseName": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Alpaca_wool_vests_and_sweaters_on_sale_at_Feria_Dominicial_in_Juliaca,_Puno,_Per%C3%BA.jpg"
+      }
     },
     {
       "id": "ml-004",
@@ -661,7 +850,14 @@
         "reviewNotes": "Reviewers say drainage holes are well placed.",
         "certification": null
       },
-      "isSample": true
+      "isSample": true,
+      "imageUrl": "/products/ml-004.jpg",
+      "imageCredit": {
+        "author": "Acabashi",
+        "licenseName": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Terracotta_urn_planter_Gibberd_Garden_Harlow_Essex.jpg"
+      }
     },
     {
       "id": "ml-005",
@@ -680,11 +876,18 @@
         "imageReuseCount": 6,
         "sellerAgeMonths": 1,
         "reviewCount": 4,
-        "reviewRating": 3.0,
+        "reviewRating": 3,
         "reviewNotes": "Several buyers say the fabric feels thinner than pictured.",
         "certification": null
       },
-      "isSample": true
+      "isSample": true,
+      "imageUrl": "/products/ml-005.jpg",
+      "imageCredit": {
+        "author": "Unknown (Wikimedia Commons)",
+        "licenseName": "CC BY 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Table_runner_(AM_1995.177.74-1).jpg"
+      }
     },
     {
       "id": "vt-001",
@@ -707,7 +910,14 @@
         "reviewNotes": "Seller has strong secondhand feedback history.",
         "certification": null
       },
-      "isSample": true
+      "isSample": true,
+      "imageUrl": "/products/vt-001.jpg",
+      "imageCredit": {
+        "author": "Pittigrilli",
+        "licenseName": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Denim_jacket_from_Dolce_%26_Gabbana_with_human_skull_on_back_made_from_Swarovski_glass_crystals.jpg"
+      }
     },
     {
       "id": "vt-002",
@@ -730,7 +940,14 @@
         "reviewNotes": "Buyers say it looks barely worn.",
         "certification": null
       },
-      "isSample": true
+      "isSample": true,
+      "imageUrl": "/products/vt-002.jpg",
+      "imageCredit": {
+        "author": "Photographer for Rhode Island School of Design Museum of Art",
+        "licenseName": "CC0",
+        "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:1920_woman%27s_coat_in_boteh_patterned_wool_with_fur_collar.jpg"
+      }
     },
     {
       "id": "vt-003",
@@ -753,7 +970,14 @@
         "reviewNotes": "Buyers note light scuffing on the corners.",
         "certification": null
       },
-      "isSample": true
+      "isSample": true,
+      "imageUrl": "/products/vt-003.jpg",
+      "imageCredit": {
+        "author": "Personal Creations",
+        "licenseName": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Brown_leather_messenger_bag_filled_with_notebooks_on_a_coffee_table_with_couch_and_pillows_in_the_background_(26212677253).jpg"
+      }
     },
     {
       "id": "vt-004",
@@ -776,7 +1000,14 @@
         "reviewNotes": "Buyers say it looks unworn.",
         "certification": null
       },
-      "isSample": true
+      "isSample": true,
+      "imageUrl": "/products/vt-004.jpg",
+      "imageCredit": {
+        "author": "Hunt Museum and Inés Rivilla López",
+        "licenseName": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Green_Pleated_Linen_Dress,_%27Irish_Moss%27_by_Sybil_Connolly_-_Full_Length_Front.jpg"
+      }
     },
     {
       "id": "vt-005",
@@ -799,7 +1030,14 @@
         "reviewNotes": "Buyers say the reclaimed wood has visible character marks.",
         "certification": null
       },
-      "isSample": true
+      "isSample": true,
+      "imageUrl": "/products/vt-005.jpg",
+      "imageCredit": {
+        "author": "Ditigibt",
+        "licenseName": "Public domain",
+        "licenseUrl": "https://creativecommons.org/",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Wooden_stool_made_in_1930_in_France.jpeg"
+      }
     },
     {
       "id": "vt-006",
@@ -823,7 +1061,14 @@
         "reviewNotes": "Buyers say it has light wash-wear but no flaws.",
         "certification": null
       },
-      "isSample": true
+      "isSample": true,
+      "imageUrl": "/products/vt-006.jpg",
+      "imageCredit": {
+        "author": "Unknown authorUnknown author",
+        "licenseName": "CC0",
+        "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Seto_linen_shirt_(Saatse_Museum).jpg"
+      }
     }
   ]
 }
