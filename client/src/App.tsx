@@ -13,6 +13,7 @@ import { Chat } from "@/pages/Chat";
 import { Hype } from "@/pages/Hype";
 import { Deinfluence } from "@/pages/Deinfluence";
 import { Cart } from "@/pages/Cart";
+import { YourTaste } from "@/pages/YourTaste";
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
           <Route path="/hype-check" element={<Hype />} />
           <Route path="/deinfluence" element={<Deinfluence />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/your-taste" element={<YourTaste />} />
         </Routes>
       </main>
     </div>

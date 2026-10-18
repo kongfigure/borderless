@@ -1,7 +1,26 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useMemo, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Armchair, Home as HomeIcon, Search, Shirt, Sparkles, ThumbsDown } from "lucide-react";
+import {
+  Armchair,
+  ArrowRight,
+  Home as HomeIcon,
+  Repeat,
+  Search,
+  Shirt,
+  Sparkle,
+  Sparkles,
+  ThumbsDown,
+  Users,
+} from "lucide-react";
+import type { Product } from "@shared/types";
+import { landedCost, trustVerdict } from "@shared/calculations";
+import { fetchProducts } from "@/lib/api";
+import { ProductCard } from "@/components/ProductCard";
+import { Flag } from "@/components/Flag";
+import { DESTINATIONS } from "@/lib/destinations";
+import { hasAnyPreference, loadPreferences } from "@/lib/preferences";
+import { recommend } from "@/lib/recommend";
 
 const categories = [
   { label: "Furniture", icon: Armchair },
@@ -21,7 +40,28 @@ const stores = [
 
 export function Home() {
   const [query, setQuery] = useState("an oversized linen shirt");
+  const [products, setProducts] = useState<Product[] | null>(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    fetchProducts().then(setProducts).catch(() => setProducts(null));
+  }, []);
+
+  const scored = useMemo(
+    () =>
+      products?.map((product) => ({
+        ...product,
+        landedCost: landedCost(product),
+        verdictResult: trustVerdict(product),
+      })) ?? null,
+    [products]
+  );
+
+  const prefs = useMemo(() => loadPreferences(), []);
+  const forYou = useMemo(
+    () => (scored && hasAnyPreference(prefs) ? recommend(scored, prefs, 3) : null),
+    [scored, prefs]
+  );
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -174,6 +214,136 @@ export function Home() {
           </div>
           <Sparkles size={28} strokeWidth={1.5} className="shrink-0 text-forest dark:text-gold" aria-hidden="true" />
         </button>
+      </section>
+
+      <section className="mt-16">
+        <p className="font-sans text-xs font-semibold uppercase tracking-[0.2em] text-gold">The world, curated</p>
+        <div className="mt-3 flex items-baseline justify-between gap-3">
+          <h2 className="font-display text-2xl text-ink dark:text-ivory">Shop by destination</h2>
+          <Link
+            to="/destinations"
+            className="flex items-center gap-1 text-sm font-medium text-forest hover:underline dark:text-gold"
+          >
+            All destinations <ArrowRight size={14} aria-hidden="true" />
+          </Link>
+        </div>
+        <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-3">
+          {DESTINATIONS.slice(0, 3).map((hub) => (
+            <Link
+              key={hub.slug}
+              to={`/destinations/${hub.slug}`}
+              className="flex flex-col gap-3 rounded-3xl border border-line bg-card p-6 transition-transform hover:-translate-y-1 dark:border-dark-line dark:bg-dark-card"
+            >
+              <div className="flex items-center gap-2">
+                <Flag code={hub.countryCode} />
+                <span className="text-xs text-ink/50 dark:text-ivory/50">{hub.country}</span>
+              </div>
+              <p className="font-display text-xl text-ink dark:text-ivory">{hub.city}</p>
+              <p className="text-sm text-ink/60 dark:text-ivory/60">{hub.description}</p>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      <section className="mt-16 grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <div className="flex flex-col justify-between gap-4 rounded-3xl border border-line bg-card p-7 dark:border-dark-line dark:bg-dark-card">
+          <div>
+            <div className="flex items-center gap-2 text-gold">
+              <Repeat size={18} aria-hidden="true" />
+              <p className="text-xs font-semibold uppercase tracking-[0.2em]">One product, a world of possibilities</p>
+            </div>
+            <p className="mt-3 font-display text-xl text-ink dark:text-ivory">
+              The same item, priced across every store that sells it
+            </p>
+            <p className="mt-2 text-sm text-ink/60 dark:text-ivory/60">
+              On select product pages we line up the delivered price across marketplaces, so you can see the lowest
+              total and switch stores in one tap.
+            </p>
+          </div>
+          <Link
+            to="/discover"
+            className="flex items-center gap-1 text-sm font-medium text-forest hover:underline dark:text-gold"
+          >
+            See it in action <ArrowRight size={14} aria-hidden="true" />
+          </Link>
+        </div>
+
+        <div className="flex flex-col justify-between gap-4 rounded-3xl border border-line bg-card p-7 dark:border-dark-line dark:bg-dark-card">
+          <div>
+            <div className="flex items-center gap-2 text-gold">
+              <Users size={18} aria-hidden="true" />
+              <p className="text-xs font-semibold uppercase tracking-[0.2em]">Better together</p>
+            </div>
+            <p className="mt-3 font-display text-xl text-ink dark:text-ivory">Split shipping with a group buy</p>
+            <p className="mt-2 text-sm text-ink/60 dark:text-ivory/60">
+              A shared shipping container costs far less per person than shipping alone — join one of our sample
+              group buys to see the savings.
+            </p>
+          </div>
+          <Link
+            to="/group-buy"
+            className="flex items-center gap-1 text-sm font-medium text-forest hover:underline dark:text-gold"
+          >
+            Browse group buys <ArrowRight size={14} aria-hidden="true" />
+          </Link>
+        </div>
+      </section>
+
+      <section className="mt-16 flex flex-col justify-between gap-4 rounded-3xl border border-gold/30 bg-gold/10 p-7 sm:flex-row sm:items-center">
+        <div>
+          <div className="flex items-center gap-2 text-gold">
+            <Sparkle size={18} aria-hidden="true" />
+            <p className="text-xs font-semibold uppercase tracking-[0.2em]">Good design deserves another life</p>
+          </div>
+          <p className="mt-3 font-display text-xl text-ink dark:text-ivory">Browse secondhand and vintage finds</p>
+          <p className="mt-2 max-w-md text-sm text-ink/60 dark:text-ivory/60">
+            Pre-loved furniture, home goods and clothing from Vinted and Rakuten, tagged with condition so you know
+            what you're getting.
+          </p>
+        </div>
+        <Link
+          to="/resale"
+          className="flex min-h-[44px] shrink-0 items-center justify-center gap-1 rounded-full bg-forest px-6 text-sm font-semibold text-ivory transition-transform hover:scale-[1.02] dark:bg-gold dark:text-dark-bg"
+        >
+          Shop resale <ArrowRight size={14} aria-hidden="true" />
+        </Link>
+      </section>
+
+      <section className="mt-16">
+        <p className="font-sans text-xs font-semibold uppercase tracking-[0.2em] text-gold">Curated for the way you live</p>
+        <div className="mt-3 flex items-baseline justify-between gap-3">
+          <h2 className="font-display text-2xl text-ink dark:text-ivory">For you</h2>
+          <Link
+            to="/your-taste"
+            className="flex items-center gap-1 text-sm font-medium text-forest hover:underline dark:text-gold"
+          >
+            {forYou ? "Edit your taste" : "Set your taste"} <ArrowRight size={14} aria-hidden="true" />
+          </Link>
+        </div>
+
+        {forYou && forYou.length > 0 ? (
+          <div className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-3">
+            {forYou.map(({ product, reason }, i) => (
+              <div key={product.id} className="flex flex-col gap-2">
+                <ProductCard product={product} tileIndex={i} />
+                <p className="px-1 text-xs text-ink/50 dark:text-ivory/50">{reason}</p>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="mt-5 flex flex-col items-start gap-3 rounded-3xl border border-line bg-card p-7 dark:border-dark-line dark:bg-dark-card">
+            <p className="text-sm text-ink/70 dark:text-ivory/70">
+              Set a budget, categories or a delivery deadline and we'll rank sample products against them — nothing
+              is required, and nothing is shared beyond your browser.
+            </p>
+            <Link
+              to="/your-taste"
+              className="flex min-h-[44px] items-center justify-center rounded-full bg-forest px-6 text-sm font-semibold text-ivory transition-transform hover:scale-[1.02] dark:bg-gold dark:text-dark-bg"
+            >
+              Set your taste
+            </Link>
+          </div>
+        )}
       </section>
     </div>
   );
