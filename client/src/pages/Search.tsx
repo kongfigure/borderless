@@ -1,11 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
-import { Search as SearchIcon } from "lucide-react";
+import { Mic, Search as SearchIcon } from "lucide-react";
 import type { Category, Marketplace, ScoredProduct } from "@shared/types";
 import { searchProducts, type SearchResponse } from "@/lib/api";
 import { ProductCard } from "@/components/ProductCard";
 import { getBadge } from "@/lib/verdict";
+import { SPEECH_UNSUPPORTED_MESSAGE, useSpeechToText } from "@/hooks/useSpeechToText";
 
 const LOADING_STEPS = [
   "Understanding your request",
@@ -116,6 +117,19 @@ export function Search() {
     setParams({ q: trimmed });
   };
 
+  const {
+    listening: speechListening,
+    error: speechError,
+    toggle: toggleSpeech,
+    supported: speechSupported,
+  } = useSpeechToText({
+    onTranscript: setQueryInput,
+    onFinish: (transcript) => {
+      const trimmed = transcript.trim();
+      if (trimmed) setParams({ q: trimmed });
+    },
+  });
+
   const toggleSave = (id: string) => {
     setSavedIds((prev) => {
       const next = new Set(prev);
@@ -156,12 +170,28 @@ export function Search() {
           className="min-w-0 flex-1 bg-transparent px-1 text-base text-ink outline-none dark:text-ivory"
         />
         <button
+          type="button"
+          onClick={toggleSpeech}
+          aria-pressed={speechListening}
+          aria-label={speechListening ? "Stop voice input" : "Search by voice"}
+          className={`flex min-h-[44px] min-w-[44px] shrink-0 items-center justify-center rounded-full transition-colors ${
+            speechListening
+              ? "bg-gold/20 text-gold"
+              : "text-ink/50 hover:text-forest dark:text-ivory/50 dark:hover:text-gold"
+          }`}
+        >
+          <Mic size={18} className={speechListening ? "animate-pulse" : ""} aria-hidden="true" />
+        </button>
+        <button
           type="submit"
           className="flex min-h-[44px] shrink-0 items-center rounded-full bg-forest px-6 text-sm font-semibold text-ivory transition-transform hover:scale-[1.02] dark:bg-gold dark:text-ink"
         >
           Search
         </button>
       </form>
+      {(speechError || !speechSupported) && (
+        <p className="mt-2 text-xs text-ink/50 dark:text-ivory/50">{speechError ?? SPEECH_UNSUPPORTED_MESSAGE}</p>
+      )}
 
       {!q.trim() && (
         <p className="mt-10 text-ink/60 dark:text-ivory/60">Search for something above to see results.</p>

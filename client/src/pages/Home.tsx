@@ -5,6 +5,7 @@ import {
   Armchair,
   ArrowRight,
   Home as HomeIcon,
+  Mic,
   Repeat,
   Search,
   Shirt,
@@ -22,6 +23,7 @@ import { MarketplaceMark } from "@/components/MarketplaceMark";
 import { DESTINATIONS } from "@/lib/destinations";
 import { hasAnyPreference, loadPreferences } from "@/lib/preferences";
 import { recommend } from "@/lib/recommend";
+import { SPEECH_UNSUPPORTED_MESSAGE, useSpeechToText } from "@/hooks/useSpeechToText";
 
 const categories = [
   { label: "Furniture", icon: Armchair },
@@ -71,6 +73,19 @@ export function Home() {
     navigate(`/search?q=${encodeURIComponent(trimmed)}`);
   };
 
+  const {
+    listening: speechListening,
+    error: speechError,
+    toggle: toggleSpeech,
+    supported: speechSupported,
+  } = useSpeechToText({
+    onTranscript: setQuery,
+    onFinish: (transcript) => {
+      const trimmed = transcript.trim();
+      if (trimmed) navigate(`/search?q=${encodeURIComponent(trimmed)}`);
+    },
+  });
+
   return (
     <div className="mx-auto max-w-6xl px-5 py-12 sm:px-8 sm:py-16">
       <motion.section
@@ -106,8 +121,21 @@ export function Home() {
               Search
             </button>
           </form>
-          <div className="mt-4 flex flex-wrap gap-2">
-            {["Speak", "Upload a photo", "Paste a link"].map((chip) => (
+          <div className="mt-4 flex flex-wrap items-center gap-2">
+            <button
+              type="button"
+              onClick={toggleSpeech}
+              aria-pressed={speechListening}
+              className={`flex min-h-[44px] items-center gap-2 rounded-full border px-4 py-2 text-sm transition-colors ${
+                speechListening
+                  ? "border-gold bg-gold/20 text-ivory"
+                  : "border-ivory/40 text-ivory/90 hover:border-ivory/70"
+              }`}
+            >
+              <Mic size={16} className={speechListening ? "animate-pulse" : ""} aria-hidden="true" />
+              {speechListening ? "Listening…" : "Speak"}
+            </button>
+            {["Upload a photo", "Paste a link"].map((chip) => (
               <span
                 key={chip}
                 className="rounded-full border border-ivory/40 px-4 py-2 text-sm text-ivory/90"
@@ -116,6 +144,9 @@ export function Home() {
               </span>
             ))}
           </div>
+          {(speechError || !speechSupported) && (
+            <p className="mt-2 text-xs text-ivory/70">{speechError ?? SPEECH_UNSUPPORTED_MESSAGE}</p>
+          )}
         </div>
 
         <div className="relative hidden min-h-[320px] lg:block" aria-hidden="true">
