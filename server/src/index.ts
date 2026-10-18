@@ -10,6 +10,7 @@ import { hypeCheck } from "./hype.js";
 import { deinfluence } from "./deinfluence.js";
 import { assistantReply, type AssistantTurn } from "./assistant.js";
 import { originStory } from "./originStory.js";
+import { roastOrders, type OrderHistoryItem, type Spiciness } from "./roast.js";
 
 const app = express();
 const PORT = process.env.PORT ? Number(process.env.PORT) : 3001;
@@ -231,6 +232,45 @@ app.post("/api/origin-story", async (req, res) => {
   } catch (err) {
     console.error("[/api/origin-story] error:", err);
     res.status(500).json({ error: "origin story failed" });
+  }
+});
+
+app.post("/api/roast", async (req, res) => {
+  const { orders, spiciness } = req.body ?? {};
+
+  const isNonEmptyString = (s: unknown, max: number): s is string =>
+    typeof s === "string" && s.trim().length > 0 && s.length <= max;
+  const isFiniteNumber = (n: unknown): n is number => typeof n === "number" && Number.isFinite(n);
+
+  const isValidOrder = (o: unknown): o is OrderHistoryItem =>
+    typeof o === "object" &&
+    o !== null &&
+    isNonEmptyString((o as OrderHistoryItem).id, 100) &&
+    isNonEmptyString((o as OrderHistoryItem).itemName, 100) &&
+    isFiniteNumber((o as OrderHistoryItem).priceUSD) &&
+    (o as OrderHistoryItem).priceUSD > 0 &&
+    isNonEmptyString((o as OrderHistoryItem).category, 50) &&
+    isNonEmptyString((o as OrderHistoryItem).date, 30) &&
+    isFiniteNumber((o as OrderHistoryItem).timesUsed) &&
+    (o as OrderHistoryItem).timesUsed >= 0 &&
+    isFiniteNumber((o as OrderHistoryItem).lastUsedDaysAgo) &&
+    (o as OrderHistoryItem).lastUsedDaysAgo >= 0;
+
+  if (!Array.isArray(orders) || orders.length === 0 || orders.length > 50 || !orders.every(isValidOrder)) {
+    res.status(400).json({ error: "orders is required and must be an array of 1-50 valid order items" });
+    return;
+  }
+  if (spiciness !== "mild" && spiciness !== "spicy") {
+    res.status(400).json({ error: "spiciness must be 'mild' or 'spicy'" });
+    return;
+  }
+
+  try {
+    const result = await roastOrders(orders, spiciness as Spiciness);
+    res.json(result);
+  } catch (err) {
+    console.error("[/api/roast] error:", err);
+    res.status(500).json({ error: "roast failed" });
   }
 });
 

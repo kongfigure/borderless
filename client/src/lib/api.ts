@@ -182,3 +182,41 @@ export async function fetchOriginStory(input: OriginStoryRequest): Promise<Origi
   }
   return res.json();
 }
+
+export interface RoastOrderInput {
+  id: string;
+  itemName: string;
+  priceUSD: number;
+  category: string;
+  date: string;
+  timesUsed: number;
+  lastUsedDaysAgo: number;
+}
+
+export interface RoastStats {
+  totalSpentUSD: number;
+  duplicateCategoryCount: number;
+  biggestRegretId: string | null;
+  moneyCouldHaveSavedUSD: number;
+  regretScore: number;
+}
+
+export interface RoastResponse {
+  perOrder: Record<string, string>;
+  overall: string;
+  stats: RoastStats;
+  source: "live" | "fallback";
+}
+
+export async function roastOrders(orders: RoastOrderInput[], spiciness: "mild" | "spicy"): Promise<RoastResponse> {
+  const res = await fetch("/api/roast", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ orders, spiciness }),
+  });
+  if (!res.ok) {
+    const body = await res.json().catch(() => null);
+    throw new Error(body?.error ?? `Roast failed: ${res.status}`);
+  }
+  return res.json();
+}

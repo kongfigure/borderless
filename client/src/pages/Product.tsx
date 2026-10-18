@@ -4,6 +4,7 @@ import { ArrowLeft, CheckCircle2, Info, XCircle } from "lucide-react";
 import type { Product as ProductType, ScoredProduct } from "@shared/types";
 import { landedCost, trustVerdict } from "@shared/calculations";
 import { fetchProducts } from "@/lib/api";
+import { addToCart } from "@/lib/cart";
 import { Flag } from "@/components/Flag";
 import { MarketplaceMark } from "@/components/MarketplaceMark";
 import { LearnTip } from "@/components/LearnTip";
@@ -146,7 +147,14 @@ export function Product() {
 
           <button
             type="button"
-            onClick={() => setAdded(true)}
+            onClick={() => {
+              addToCart({
+                itemName: selected.title,
+                priceUSD: selected.landedCost.totalUSD,
+                category: selected.category,
+              });
+              setAdded(true);
+            }}
             className="mt-5 flex min-h-[44px] w-full items-center justify-center rounded-full bg-forest text-sm font-semibold text-ivory transition-transform hover:scale-[1.02] dark:bg-gold dark:text-dark-bg"
           >
             {added ? `Added · $${selected.landedCost.totalUSD.toFixed(2)}` : `Add to bag · $${selected.landedCost.totalUSD.toFixed(2)}`}
