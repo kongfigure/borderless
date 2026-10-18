@@ -142,13 +142,20 @@ export interface AssistantRequest {
 export interface AssistantProductCard {
   id: string;
   title: string;
+  titleTranslated?: string;
   marketplace: string;
   countryCode: string;
   category: string;
+  imageUrl?: string;
+  itemPriceUSD: number;
+  shippingUSD: number;
+  dutyUSD: number;
+  estimatedTaxUSD: number;
   totalUSD: number;
   deliveryDays: number;
   fulfillment: "in_stock" | "pre_order";
   verdict: "looks_good" | "skip" | "not_enough_info";
+  verdictReasons: string[];
 }
 
 export interface AssistantResponse {

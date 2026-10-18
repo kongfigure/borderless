@@ -45,13 +45,20 @@ export interface AssistantInput {
 export interface AssistantProductCard {
   id: string;
   title: string;
+  titleTranslated?: string;
   marketplace: string;
   countryCode: string;
   category: string;
+  imageUrl?: string;
+  itemPriceUSD: number;
+  shippingUSD: number;
+  dutyUSD: number;
+  estimatedTaxUSD: number;
   totalUSD: number;
   deliveryDays: number;
   fulfillment: "in_stock" | "pre_order";
   verdict: "looks_good" | "skip" | "not_enough_info";
+  verdictReasons: string[];
 }
 
 export interface AssistantResult {
@@ -143,13 +150,20 @@ export async function assistantReply(input: AssistantInput, products: Product[])
       products: results.map((p) => ({
         id: p.id,
         title: p.title,
+        titleTranslated: p.titleTranslated,
         marketplace: p.marketplace,
         countryCode: p.countryCode,
         category: p.category,
+        imageUrl: p.imageUrl,
+        itemPriceUSD: p.landedCost.itemPriceUSD,
+        shippingUSD: p.landedCost.shippingUSD,
+        dutyUSD: p.landedCost.dutyUSD,
+        estimatedTaxUSD: p.landedCost.estimatedTaxUSD,
         totalUSD: p.landedCost.totalUSD,
         deliveryDays: p.deliveryDays,
         fulfillment: p.fulfillment,
         verdict: p.verdictResult.verdict,
+        verdictReasons: p.verdictResult.signals.map((s) => s.reason),
       })),
     };
   }

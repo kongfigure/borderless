@@ -14,6 +14,9 @@ import { Chat } from "@/pages/Chat";
 import { Hype } from "@/pages/Hype";
 import { Deinfluence } from "@/pages/Deinfluence";
 import { Cart } from "@/pages/Cart";
+import { Checkout } from "@/pages/Checkout";
+import { OrderConfirmation } from "@/pages/OrderConfirmation";
+import { Orders } from "@/pages/Orders";
 import { YourTaste } from "@/pages/YourTaste";
 import { Iconic } from "@/pages/Iconic";
 
@@ -35,6 +38,9 @@ function App() {
           <Route path="/hype-check" element={<Hype />} />
           <Route path="/deinfluence" element={<Deinfluence />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/checkout" element={<Checkout />} />
+          <Route path="/order/:id" element={<OrderConfirmation />} />
+          <Route path="/orders" element={<Orders />} />
           <Route path="/your-taste" element={<YourTaste />} />
           <Route path="/iconic/:id" element={<Iconic />} />
         </Routes>

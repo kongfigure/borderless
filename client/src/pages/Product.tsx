@@ -149,9 +149,18 @@ export function Product() {
             type="button"
             onClick={() => {
               addToCart({
+                productId: selected.id,
                 itemName: selected.title,
-                priceUSD: selected.landedCost.totalUSD,
+                titleTranslated: selected.titleTranslated,
                 category: selected.category,
+                marketplace: selected.marketplace,
+                countryCode: selected.countryCode,
+                imageUrl: selected.imageUrl,
+                deliveryDays: selected.deliveryDays,
+                fulfillment: selected.fulfillment,
+                verdict: selected.verdictResult.verdict,
+                verdictReasons: selected.verdictResult.signals.map((s) => s.reason),
+                landedCost: selected.landedCost,
               });
               setAdded(true);
             }}

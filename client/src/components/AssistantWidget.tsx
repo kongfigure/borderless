@@ -70,7 +70,26 @@ function AssistantProductCardTile({ card }: { card: AssistantProductCard }) {
       <button
         type="button"
         onClick={() => {
-          addToCart({ itemName: card.title, priceUSD: card.totalUSD, category: card.category });
+          addToCart({
+            productId: card.id,
+            itemName: card.title,
+            titleTranslated: card.titleTranslated,
+            category: card.category,
+            marketplace: card.marketplace,
+            countryCode: card.countryCode,
+            imageUrl: card.imageUrl,
+            deliveryDays: card.deliveryDays,
+            fulfillment: card.fulfillment,
+            verdict: card.verdict,
+            verdictReasons: card.verdictReasons,
+            landedCost: {
+              itemPriceUSD: card.itemPriceUSD,
+              shippingUSD: card.shippingUSD,
+              dutyUSD: card.dutyUSD,
+              estimatedTaxUSD: card.estimatedTaxUSD,
+              totalUSD: card.totalUSD,
+            },
+          });
           setAdded(true);
         }}
         aria-pressed={added}
@@ -141,7 +160,11 @@ export function AssistantWidget() {
 
   function buildContext(): AssistantContext {
     const prefs = loadPreferences();
-    const cart = loadCart().map((item) => ({ id: item.id, title: item.itemName, totalUSD: item.priceUSD }));
+    const cart = loadCart().map((item) => ({
+      id: item.id,
+      title: item.itemName,
+      totalUSD: item.landedCost.totalUSD * item.quantity,
+    }));
     return {
       route: location.pathname,
       visibleProducts,
