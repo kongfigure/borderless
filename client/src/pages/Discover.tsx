@@ -3,6 +3,8 @@ import type { Product } from "@shared/types";
 import { landedCost, trustVerdict } from "@shared/calculations";
 import { fetchProducts } from "@/lib/api";
 import { ProductCard } from "@/components/ProductCard";
+import { IconicProductCard } from "@/components/IconicProductCard";
+import { ICONIC_PRODUCTS } from "@/lib/iconicProducts";
 
 export function Discover() {
   const [products, setProducts] = useState<Product[] | null>(null);
@@ -55,6 +57,19 @@ export function Discover() {
           ))}
         </div>
       )}
+
+      <section className="mt-16">
+        <p className="font-sans text-xs font-semibold uppercase tracking-[0.2em] text-gold">Where things come from</p>
+        <h2 className="mt-3 font-display text-2xl text-ink dark:text-ivory">Iconic finds</h2>
+        <p className="mt-2 max-w-xl text-sm text-ink/60 dark:text-ivory/60">
+          A few products with a real cultural story behind them, and where in the world they're from.
+        </p>
+        <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {ICONIC_PRODUCTS.map((product) => (
+            <IconicProductCard key={product.id} product={product} />
+          ))}
+        </div>
+      </section>
 
       <p className="mt-10 text-xs text-ink/40 dark:text-ivory/40">
         Sample data for the demo — prices, reviews and verdicts shown here are not real listings.

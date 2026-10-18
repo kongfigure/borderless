@@ -156,3 +156,29 @@ export async function askAssistant(input: AssistantRequest): Promise<AssistantRe
   }
   return res.json();
 }
+
+export interface OriginStoryRequest {
+  productName: string;
+  brand: string;
+  originCountry: string;
+  category: string;
+  fallbackStory: string;
+}
+
+export interface OriginStoryResponse {
+  story: string;
+  source: "live" | "fallback";
+}
+
+export async function fetchOriginStory(input: OriginStoryRequest): Promise<OriginStoryResponse> {
+  const res = await fetch("/api/origin-story", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(input),
+  });
+  if (!res.ok) {
+    const body = await res.json().catch(() => null);
+    throw new Error(body?.error ?? `Origin story failed: ${res.status}`);
+  }
+  return res.json();
+}

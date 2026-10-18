@@ -15,6 +15,7 @@ import { Hype } from "@/pages/Hype";
 import { Deinfluence } from "@/pages/Deinfluence";
 import { Cart } from "@/pages/Cart";
 import { YourTaste } from "@/pages/YourTaste";
+import { Iconic } from "@/pages/Iconic";
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
           <Route path="/deinfluence" element={<Deinfluence />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/your-taste" element={<YourTaste />} />
+          <Route path="/iconic/:id" element={<Iconic />} />
         </Routes>
       </main>
       <AssistantWidget />

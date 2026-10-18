@@ -24,6 +24,8 @@ import { DESTINATIONS } from "@/lib/destinations";
 import { hasAnyPreference, loadPreferences } from "@/lib/preferences";
 import { recommend } from "@/lib/recommend";
 import { SPEECH_UNSUPPORTED_MESSAGE, useSpeechToText } from "@/hooks/useSpeechToText";
+import { IconicProductCard } from "@/components/IconicProductCard";
+import { ICONIC_PRODUCTS } from "@/lib/iconicProducts";
 
 const categories = [
   { label: "Furniture", icon: Armchair },
@@ -267,6 +269,24 @@ export function Home() {
               <p className="font-display text-xl text-ink dark:text-ivory">{hub.city}</p>
               <p className="text-sm text-ink/60 dark:text-ivory/60">{hub.description}</p>
             </Link>
+          ))}
+        </div>
+      </section>
+
+      <section className="mt-16">
+        <p className="font-sans text-xs font-semibold uppercase tracking-[0.2em] text-gold">Where things come from</p>
+        <div className="mt-3 flex items-baseline justify-between gap-3">
+          <h2 className="font-display text-2xl text-ink dark:text-ivory">Iconic finds</h2>
+          <Link
+            to="/discover"
+            className="flex items-center gap-1 text-sm font-medium text-forest hover:underline dark:text-gold"
+          >
+            See more <ArrowRight size={14} aria-hidden="true" />
+          </Link>
+        </div>
+        <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {ICONIC_PRODUCTS.slice(0, 4).map((product) => (
+            <IconicProductCard key={product.id} product={product} />
           ))}
         </div>
       </section>

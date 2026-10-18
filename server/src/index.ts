@@ -9,6 +9,7 @@ import { scoreProduct } from "./score.js";
 import { hypeCheck } from "./hype.js";
 import { deinfluence } from "./deinfluence.js";
 import { assistantReply, type AssistantTurn } from "./assistant.js";
+import { originStory } from "./originStory.js";
 
 const app = express();
 const PORT = process.env.PORT ? Number(process.env.PORT) : 3001;
@@ -194,6 +195,42 @@ app.post("/api/assistant", async (req, res) => {
   } catch (err) {
     console.error("[/api/assistant] error:", err);
     res.status(500).json({ error: "assistant failed" });
+  }
+});
+
+app.post("/api/origin-story", async (req, res) => {
+  const { productName, brand, originCountry, category, fallbackStory } = req.body ?? {};
+
+  const isNonEmptyString = (s: unknown, max: number): s is string =>
+    typeof s === "string" && s.trim().length > 0 && s.length <= max;
+
+  if (!isNonEmptyString(productName, 100)) {
+    res.status(400).json({ error: "productName is required and must be a non-empty string under 100 characters" });
+    return;
+  }
+  if (!isNonEmptyString(brand, 100)) {
+    res.status(400).json({ error: "brand is required and must be a non-empty string under 100 characters" });
+    return;
+  }
+  if (!isNonEmptyString(originCountry, 100)) {
+    res.status(400).json({ error: "originCountry is required and must be a non-empty string under 100 characters" });
+    return;
+  }
+  if (!isNonEmptyString(category, 50)) {
+    res.status(400).json({ error: "category is required and must be a non-empty string under 50 characters" });
+    return;
+  }
+  if (!isNonEmptyString(fallbackStory, 1000)) {
+    res.status(400).json({ error: "fallbackStory is required and must be a non-empty string under 1000 characters" });
+    return;
+  }
+
+  try {
+    const result = await originStory({ productName, brand, originCountry, category, fallbackStory });
+    res.json(result);
+  } catch (err) {
+    console.error("[/api/origin-story] error:", err);
+    res.status(500).json({ error: "origin story failed" });
   }
 });
 
