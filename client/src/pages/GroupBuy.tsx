@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { Users } from "lucide-react";
+import { Truck, Users } from "lucide-react";
 import { Flag } from "@/components/Flag";
 import { MarketplaceMark } from "@/components/MarketplaceMark";
 import { LearnTip } from "@/components/LearnTip";
+import { ShipmentTracker, FAST_FORWARD_DAYS } from "@/components/ShipmentTracker";
 import { GROUP_BUYS, SHARED_CONTAINER_MULTIPLIER } from "@/lib/groupBuys";
 
 const STORAGE_KEY = "borderless-group-buy-joined";
@@ -24,6 +25,7 @@ function loadJoined(): Set<string> {
 
 export function GroupBuy() {
   const [joinedIds, setJoinedIds] = useState<Set<string>>(() => new Set());
+  const [shipmentDays, setShipmentDays] = useState<Record<string, number>>({});
 
   useEffect(() => {
     setJoinedIds(loadJoined());
@@ -37,6 +39,17 @@ export function GroupBuy() {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(Array.from(next)));
       return next;
     });
+  };
+
+  const fastForward = (id: string, totalDays: number) => {
+    setShipmentDays((prev) => ({
+      ...prev,
+      [id]: Math.min(totalDays, (prev[id] ?? 0) + FAST_FORWARD_DAYS),
+    }));
+  };
+
+  const resetShipment = (id: string) => {
+    setShipmentDays((prev) => ({ ...prev, [id]: 0 }));
   };
 
   return (
@@ -124,6 +137,39 @@ export function GroupBuy() {
           );
         })}
       </div>
+
+      <section className="mt-16">
+        <p className="font-sans text-xs font-semibold uppercase tracking-[0.2em] text-gold">Where your parcel is</p>
+        <h2 className="mt-3 flex items-center gap-2 font-display text-2xl text-ink dark:text-ivory">
+          <Truck size={24} strokeWidth={1.5} className="text-forest dark:text-gold" aria-hidden="true" />
+          Track your shipments
+        </h2>
+
+        {GROUP_BUYS.filter((gb) => joinedIds.has(gb.id)).length === 0 ? (
+          <p className="mt-4 text-sm text-ink/50 dark:text-ivory/50">
+            Join a group buy above to see its simulated tracker here.
+          </p>
+        ) : (
+          <div className="mt-5 grid grid-cols-1 gap-6 lg:grid-cols-2">
+            {GROUP_BUYS.filter((gb) => joinedIds.has(gb.id)).map((gb) => {
+              const currentParticipants = gb.baseJoined + 1;
+              const totalGroupShippingUSD = round2(gb.individualShippingUSD * SHARED_CONTAINER_MULTIPLIER);
+              const perPersonShippingUSD = round2(totalGroupShippingUSD / currentParticipants);
+              return (
+                <ShipmentTracker
+                  key={gb.id}
+                  groupBuy={gb}
+                  dayIndex={shipmentDays[gb.id] ?? 0}
+                  currentParticipants={currentParticipants}
+                  perPersonShippingUSD={perPersonShippingUSD}
+                  onFastForward={() => fastForward(gb.id, gb.estimatedDays)}
+                  onReset={() => resetShipment(gb.id)}
+                />
+              );
+            })}
+          </div>
+        )}
+      </section>
 
       <LearnTip>
         Group buys work because a shared shipping container scales sub-linearly with the number of parcels inside
