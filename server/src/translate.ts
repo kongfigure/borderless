@@ -1,4 +1,4 @@
-import Anthropic from "@anthropic-ai/sdk";
+import { generate } from "./llm.js";
 
 export interface TranslationResult {
   chineseTerm: string;
@@ -27,38 +27,17 @@ function fallbackTranslate(query: string): string {
   return hit ? hit.chineseTerm : query.trim();
 }
 
-/** Generates the Chinese search term a shopper would use, via the Anthropic
- * API. Falls back to a small local dictionary if the key is missing or the
- * call fails — never fakes a live response. */
+/** Generates the Chinese search term a shopper would use, via Claude. Falls
+ * back to a small local dictionary if the key is missing, the cost cap is
+ * reached, or the call fails — never fakes a live response. */
 export async function translateQuery(query: string): Promise<TranslationResult> {
-  const apiKey = process.env.ANTHROPIC_API_KEY;
-  if (!apiKey) {
+  const response = await generate({
+    maxTokens: 30,
+    prompt: `Translate this shopping search query into the Chinese search term a shopper would type on Taobao to find it. Reply with ONLY the Chinese term, no quotes, no explanation.\n\nQuery: ${query}`,
+  });
+
+  if (!response) {
     return { chineseTerm: fallbackTranslate(query), source: "fallback" };
   }
-
-  try {
-    const anthropic = new Anthropic({ apiKey });
-    const message = await anthropic.messages.create({
-      model: "claude-haiku-4-5-20251001",
-      max_tokens: 30,
-      messages: [
-        {
-          role: "user",
-          content: `Translate this shopping search query into the Chinese search term a shopper would type on Taobao to find it. Reply with ONLY the Chinese term, no quotes, no explanation.\n\nQuery: ${query}`,
-        },
-      ],
-    });
-    const text = message.content
-      .filter((block): block is Anthropic.TextBlock => block.type === "text")
-      .map((block) => block.text)
-      .join("")
-      .trim();
-
-    if (!text) {
-      return { chineseTerm: fallbackTranslate(query), source: "fallback" };
-    }
-    return { chineseTerm: text, source: "live" };
-  } catch {
-    return { chineseTerm: fallbackTranslate(query), source: "fallback" };
-  }
+  return { chineseTerm: response.text, source: "live" };
 }

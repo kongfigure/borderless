@@ -9,7 +9,6 @@ import {
   Repeat,
   Search,
   Shirt,
-  Sparkle,
   Sparkles,
   ThumbsDown,
   Users,
@@ -333,26 +332,6 @@ export function Home() {
             Browse group buys <ArrowRight size={14} aria-hidden="true" />
           </Link>
         </div>
-      </section>
-
-      <section className="mt-16 flex flex-col justify-between gap-4 rounded-3xl border border-gold/30 bg-gold/10 p-7 sm:flex-row sm:items-center">
-        <div>
-          <div className="flex items-center gap-2 text-gold">
-            <Sparkle size={18} aria-hidden="true" />
-            <p className="text-xs font-semibold uppercase tracking-[0.2em]">Good design deserves another life</p>
-          </div>
-          <p className="mt-3 font-display text-xl text-ink dark:text-ivory">Browse secondhand and vintage finds</p>
-          <p className="mt-2 max-w-md text-sm text-ink/60 dark:text-ivory/60">
-            Pre-loved furniture, home goods and clothing from Vinted and Rakuten, tagged with condition so you know
-            what you're getting.
-          </p>
-        </div>
-        <Link
-          to="/resale"
-          className="flex min-h-[44px] shrink-0 items-center justify-center gap-1 rounded-full bg-forest px-6 text-sm font-semibold text-ivory transition-transform hover:scale-[1.02] dark:bg-gold dark:text-dark-bg"
-        >
-          Shop resale <ArrowRight size={14} aria-hidden="true" />
-        </Link>
       </section>
 
       <section className="mt-16">

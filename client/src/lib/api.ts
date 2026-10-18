@@ -220,3 +220,15 @@ export async function roastOrders(orders: RoastOrderInput[], spiciness: "mild" |
   }
   return res.json();
 }
+
+export async function submitFeedback(message: string, page: string): Promise<void> {
+  const res = await fetch("/api/feedback", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ message, page }),
+  });
+  if (!res.ok) {
+    const body = await res.json().catch(() => null);
+    throw new Error(body?.error ?? `Feedback submission failed: ${res.status}`);
+  }
+}

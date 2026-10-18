@@ -1,13 +1,13 @@
 import { Route, Routes } from "react-router-dom";
 import { Nav } from "@/components/Nav";
 import { AssistantWidget } from "@/components/AssistantWidget";
+import { FeedbackWidget } from "@/components/FeedbackWidget";
 import { Home } from "@/pages/Home";
 import { Discover } from "@/pages/Discover";
 import { Search } from "@/pages/Search";
 import { Destinations } from "@/pages/Destinations";
 import { DestinationCity } from "@/pages/DestinationCity";
 import { GroupBuy } from "@/pages/GroupBuy";
-import { Resale } from "@/pages/Resale";
 import { Product } from "@/pages/Product";
 import { Skip } from "@/pages/Skip";
 import { Chat } from "@/pages/Chat";
@@ -29,7 +29,6 @@ function App() {
           <Route path="/destinations" element={<Destinations />} />
           <Route path="/destinations/:city" element={<DestinationCity />} />
           <Route path="/group-buy" element={<GroupBuy />} />
-          <Route path="/resale" element={<Resale />} />
           <Route path="/product/:id" element={<Product />} />
           <Route path="/skip/:id" element={<Skip />} />
           <Route path="/chat/:id" element={<Chat />} />
@@ -41,6 +40,7 @@ function App() {
         </Routes>
       </main>
       <AssistantWidget />
+      <FeedbackWidget />
     </div>
   );
 }

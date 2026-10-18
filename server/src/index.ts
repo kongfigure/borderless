@@ -11,6 +11,8 @@ import { deinfluence } from "./deinfluence.js";
 import { assistantReply, type AssistantTurn } from "./assistant.js";
 import { originStory } from "./originStory.js";
 import { roastOrders, type OrderHistoryItem, type Spiciness } from "./roast.js";
+import { llmStatusLine } from "./llm.js";
+import { submitFeedback } from "./feedback.js";
 
 const app = express();
 const PORT = process.env.PORT ? Number(process.env.PORT) : 3001;
@@ -274,6 +276,24 @@ app.post("/api/roast", async (req, res) => {
   }
 });
 
+app.post("/api/feedback", (req, res) => {
+  const { message, page } = req.body ?? {};
+
+  if (typeof message !== "string" || message.trim().length === 0 || message.length > 2000) {
+    res.status(400).json({ error: "message is required and must be a non-empty string under 2000 characters" });
+    return;
+  }
+
+  try {
+    submitFeedback(message.trim(), typeof page === "string" ? page.slice(0, 200) : "unknown");
+    res.json({ ok: true });
+  } catch (err) {
+    console.error("[/api/feedback] error:", err);
+    res.status(500).json({ error: "feedback submission failed" });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`Borderless server listening on http://localhost:${PORT}`);
+  console.log(llmStatusLine());
 });

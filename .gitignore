@@ -5,3 +5,5 @@ dist/
 .DS_Store
 *.tsbuildinfo
 *.log
+server/.cache/
+data/feedback.json

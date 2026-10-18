@@ -1,4 +1,4 @@
-import Anthropic from "@anthropic-ai/sdk";
+import { generate } from "./llm.js";
 
 export interface OrderHistoryItem {
   id: string;
@@ -111,57 +111,46 @@ const ROAST_RULES =
   "(no calling them poor, broke, irresponsible, etc). Keep it funny but affectionate, like a close friend teasing " +
   "them, never cruel or shaming.";
 
-/** Calls Anthropic with ONLY structured order data and server-computed stats
+/** Calls Claude with ONLY structured order data and server-computed stats
  * (never raw free text), asking for one roast line per order plus an overall
- * verdict. Falls back to deterministic, stats-driven templates on any
- * failure — never fabricates a live response. */
+ * verdict. Falls back to deterministic, stats-driven templates if the key
+ * is missing, the cost cap is reached, or the call fails — never fabricates
+ * a live response. */
 export async function roastOrders(orders: OrderHistoryItem[], spiciness: Spiciness): Promise<RoastResult> {
   const stats = computeStats(orders);
 
-  const apiKey = process.env.ANTHROPIC_API_KEY;
-  if (!apiKey || orders.length === 0) {
+  if (orders.length === 0) {
     return fallbackResult(orders, spiciness);
   }
 
+  const toneInstruction =
+    spiciness === "spicy"
+      ? "Tone: playfully sharp and cheeky, but still kind."
+      : "Tone: gentle and warm.";
+
+  const orderLines = orders
+    .map(
+      (o) =>
+        `- id: ${o.id}, item: ${o.itemName}, price: $${o.priceUSD}, category: ${o.category}, timesUsed: ${o.timesUsed}, lastUsedDaysAgo: ${o.lastUsedDaysAgo}`
+    )
+    .join("\n");
+
+  const response = await generate({
+    maxTokens: 700,
+    prompt:
+      `A shopper wants their past orders roasted, affectionately. ${ROAST_RULES} ${toneInstruction}\n\n` +
+      `Orders:\n${orderLines}\n\n` +
+      `Computed stats: totalSpentUSD=$${stats.totalSpentUSD}, duplicateCategoryCount=${stats.duplicateCategoryCount}, ` +
+      `biggestRegretId=${stats.biggestRegretId}, moneyCouldHaveSavedUSD=$${stats.moneyCouldHaveSavedUSD}, regretScore=${stats.regretScore}\n\n` +
+      `Write ONE roast line per order (ending each with "Smarter move: ..."), plus one overall verdict that ends with the exact phrase ` +
+      `"You may still buy it. Now you know why." Reply with ONLY valid JSON, no markdown, in this exact shape: ` +
+      `{"perOrder": {"<id>": "..."}, "overall": "..."}`,
+  });
+
+  if (!response) return fallbackResult(orders, spiciness);
+
   try {
-    const anthropic = new Anthropic({ apiKey });
-    const toneInstruction =
-      spiciness === "spicy"
-        ? "Tone: playfully sharp and cheeky, but still kind."
-        : "Tone: gentle and warm.";
-
-    const orderLines = orders
-      .map(
-        (o) =>
-          `- id: ${o.id}, item: ${o.itemName}, price: $${o.priceUSD}, category: ${o.category}, timesUsed: ${o.timesUsed}, lastUsedDaysAgo: ${o.lastUsedDaysAgo}`
-      )
-      .join("\n");
-
-    const message = await anthropic.messages.create({
-      model: "claude-haiku-4-5-20251001",
-      max_tokens: 700,
-      messages: [
-        {
-          role: "user",
-          content:
-            `A shopper wants their past orders roasted, affectionately. ${ROAST_RULES} ${toneInstruction}\n\n` +
-            `Orders:\n${orderLines}\n\n` +
-            `Computed stats: totalSpentUSD=$${stats.totalSpentUSD}, duplicateCategoryCount=${stats.duplicateCategoryCount}, ` +
-            `biggestRegretId=${stats.biggestRegretId}, moneyCouldHaveSavedUSD=$${stats.moneyCouldHaveSavedUSD}, regretScore=${stats.regretScore}\n\n` +
-            `Write ONE roast line per order (ending each with "Smarter move: ..."), plus one overall verdict that ends with the exact phrase ` +
-            `"You may still buy it. Now you know why." Reply with ONLY valid JSON, no markdown, in this exact shape: ` +
-            `{"perOrder": {"<id>": "..."}, "overall": "..."}`,
-        },
-      ],
-    });
-
-    const text = message.content
-      .filter((block): block is Anthropic.TextBlock => block.type === "text")
-      .map((block) => block.text)
-      .join("")
-      .trim();
-
-    const parsed = JSON.parse(text);
+    const parsed = JSON.parse(response.text);
     if (
       typeof parsed.perOrder !== "object" ||
       parsed.perOrder === null ||

@@ -1,4 +1,4 @@
-import Anthropic from "@anthropic-ai/sdk";
+import { generate } from "./llm.js";
 
 export interface DeinfluenceInput {
   itemName: string;
@@ -44,41 +44,33 @@ function fallbackContent(itemName: string, costPerUseUSD: number): Pick<Deinflue
   };
 }
 
-/** Computes cost-per-use deterministically, then calls the Anthropic API
- * with ONLY that structured data (item name, price, cost per use, usage
- * assumption) for a funny-but-kind verdict, one practical tip, and one
- * smarter alternative. Falls back to a template if the key is missing, the
- * call fails, or the response isn't valid JSON — never fakes a live
- * response. */
+/** Computes cost-per-use deterministically, then calls Claude with ONLY
+ * that structured data (item name, price, cost per use, usage assumption)
+ * for a funny-but-kind verdict, one practical tip, and one smarter
+ * alternative. Falls back to a template if the key is missing, the cost
+ * cap is reached, the call fails, or the response isn't valid JSON — never
+ * fakes a live response. */
 export async function deinfluence(input: DeinfluenceInput): Promise<DeinfluenceResult> {
   const { itemName, priceUSD } = input;
   const { uses, note } = getUsage(itemName);
   const costPerUseUSD = round2(priceUSD / uses);
+  const fallback = () => ({
+    costPerUseUSD,
+    assumedUses: uses,
+    usageNote: note,
+    ...fallbackContent(itemName, costPerUseUSD),
+    source: "fallback" as const,
+  });
 
-  const apiKey = process.env.ANTHROPIC_API_KEY;
-  if (!apiKey) {
-    return { costPerUseUSD, assumedUses: uses, usageNote: note, ...fallbackContent(itemName, costPerUseUSD), source: "fallback" };
-  }
+  const response = await generate({
+    maxTokens: 200,
+    prompt: `A shopper is considering a trending item. Given ONLY this structured data, respond with a funny but kind verdict (never shaming), one practical tip, and one smarter alternative. Reply with ONLY valid JSON, no markdown, in this exact shape: {"verdict": "...", "tip": "...", "alternative": "..."}\n\nItem: ${itemName}\nPrice: $${priceUSD}\nCost per use: $${costPerUseUSD.toFixed(2)} (assuming ${note})`,
+  });
+
+  if (!response) return fallback();
 
   try {
-    const anthropic = new Anthropic({ apiKey });
-    const message = await anthropic.messages.create({
-      model: "claude-haiku-4-5-20251001",
-      max_tokens: 200,
-      messages: [
-        {
-          role: "user",
-          content: `A shopper is considering a trending item. Given ONLY this structured data, respond with a funny but kind verdict (never shaming), one practical tip, and one smarter alternative. Reply with ONLY valid JSON, no markdown, in this exact shape: {"verdict": "...", "tip": "...", "alternative": "..."}\n\nItem: ${itemName}\nPrice: $${priceUSD}\nCost per use: $${costPerUseUSD.toFixed(2)} (assuming ${note})`,
-        },
-      ],
-    });
-    const text = message.content
-      .filter((block): block is Anthropic.TextBlock => block.type === "text")
-      .map((block) => block.text)
-      .join("")
-      .trim();
-
-    const parsed = JSON.parse(text);
+    const parsed = JSON.parse(response.text);
     if (
       typeof parsed.verdict !== "string" ||
       typeof parsed.tip !== "string" ||
@@ -97,6 +89,6 @@ export async function deinfluence(input: DeinfluenceInput): Promise<DeinfluenceR
       source: "live",
     };
   } catch {
-    return { costPerUseUSD, assumedUses: uses, usageNote: note, ...fallbackContent(itemName, costPerUseUSD), source: "fallback" };
+    return fallback();
   }
 }
