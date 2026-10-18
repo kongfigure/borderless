@@ -165,7 +165,7 @@ export function Home() {
           <ThumbsDown size={28} strokeWidth={1.5} className="shrink-0 text-forest dark:text-gold" aria-hidden="true" />
         </button>
         <button
-          onClick={() => navigate("/hype")}
+          onClick={() => navigate("/hype-check")}
           className="flex items-center justify-between gap-4 rounded-3xl border border-forest/20 bg-forest/5 px-7 py-6 text-left transition-transform hover:-translate-y-1 dark:border-gold/20 dark:bg-gold/5"
         >
           <div>

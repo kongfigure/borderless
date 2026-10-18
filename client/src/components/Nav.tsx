@@ -8,7 +8,7 @@ const links = [
   { to: "/discover", label: "Discover" },
   { to: "/search", label: "Search" },
   { to: "/destinations", label: "Destinations" },
-  { to: "/hype", label: "Hype Check" },
+  { to: "/hype-check", label: "Hype Check" },
   { to: "/deinfluence", label: "Deinfluence" },
 ];
 

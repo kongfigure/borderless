@@ -26,7 +26,7 @@ function App() {
           <Route path="/product/:id" element={<Product />} />
           <Route path="/skip/:id" element={<Skip />} />
           <Route path="/chat/:id" element={<Chat />} />
-          <Route path="/hype" element={<Hype />} />
+          <Route path="/hype-check" element={<Hype />} />
           <Route path="/deinfluence" element={<Deinfluence />} />
           <Route path="/cart" element={<Cart />} />
         </Routes>

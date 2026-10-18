@@ -44,3 +44,30 @@ export async function explainProduct(productId: string): Promise<ExplainResponse
   }
   return res.json();
 }
+
+export interface HypeCheckRequest {
+  itemName: string;
+  priceUSD: number;
+  typicalLowUSD: number;
+  typicalHighUSD: number;
+  costPerUseUSD: number;
+  cheaperAlternative: { name: string; priceUSD: number };
+}
+
+export interface HypeCheckResponse {
+  explanation: string;
+  source: "live" | "fallback";
+}
+
+export async function hypeCheck(input: HypeCheckRequest): Promise<HypeCheckResponse> {
+  const res = await fetch("/api/hype-check", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(input),
+  });
+  if (!res.ok) {
+    const body = await res.json().catch(() => null);
+    throw new Error(body?.error ?? `Hype check failed: ${res.status}`);
+  }
+  return res.json();
+}
